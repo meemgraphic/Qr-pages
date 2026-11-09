@@ -1715,8 +1715,7 @@ if(location.hash.startsWith("#p=")){
  const copy=async t=>{try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}a.remove();return ok}};
  const slug=()=>(S.n||"logo").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-logo.png";
  /* ---------- cloud database (Firebase) ---------- */
- const CFG0={apiKey:"",authDomain:"",projectId:"",appId:""}; /* optional: paste your firebaseConfig values here instead of using the Cloud button */
- const hard=!!(CFG0.apiKey&&CFG0.projectId),cfg=hard?CFG0:lsGet("cc_qr_fb",{});
+ const cfg={apiKey:"AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs",authDomain:"qr-pages-b511c.firebaseapp.com",projectId:"qr-pages-b511c",storageBucket:"qr-pages-b511c.firebasestorage.app",messagingSenderId:"491077035821",appId:"1:491077035821:web:15c9a84bcd1bc1f85e15a4",measurementId:"G-9XVPC004S6"};
  let auth=null,fs=null,user=null,ready=false,cloud=false,SNAP=new Map(),syncT;
  const RULES=`rules_version = '2';
 service cloud.firestore {
@@ -1773,22 +1772,12 @@ service cloud.firestore {
  $("aCfg").onclick=()=>openCfg();
  $("cfgBtn").onclick=()=>openCfg();
  function closeCfg(){$("cfgBox").classList.remove("on");if(!openId&&!$("dlgBox").classList.contains("on"))$("bk").classList.remove("on")}
- function parseCfg(t){const o={};for(const m of t.matchAll(/["']?(apiKey|authDomain|projectId|storageBucket|messagingSenderId|appId|measurementId)["']?\s*:\s*["']([^"']+)["']/g))o[m[1]]=m[2];return o}
- function openCfg(){const b=$("cfgBox");const shown=cfg&&cfg.apiKey?Object.entries(cfg).map(([k,v])=>`  ${k}: "${v}"`).join(",\n"):"";
-  b.innerHTML=`<h3>Cloud database · Firebase</h3><p>${cloud&&user?`Connected · signed in as <b>${esc(user.email||"")}</b>`:cloud?"Connected to Firebase. Sign in to continue.":"Not connected — projects are stored only in this browser."}</p>
-  <div class="fld">Paste your firebaseConfig</div><textarea id="cFb" class="cfgta" placeholder='const firebaseConfig = {\n  apiKey: "AIza…",\n  authDomain: "your-app.firebaseapp.com",\n  projectId: "your-app",\n  appId: "1:123:web:abc"\n};' ${hard?"disabled":""}>${esc(shown)}</textarea>
-  <div class="seg" style="margin-top:8px">${hard?"":'<button class="pill dk" data-c="save">Save &amp; connect</button>'}${cloud&&user?'<button class="pill" data-c="reload">Reload from cloud</button><button class="pill" data-c="out">Sign out</button>':""}${!hard&&cfg&&cfg.apiKey?'<button class="pill" data-c="clear">Use local only</button>':""}</div>
-  <div class="sec">One-time setup in Firebase console</div>
-  <ol class="steps"><li>Open <b>console.firebase.google.com</b> → <b>Add project</b> (Google Analytics can be off).</li><li><b>Build → Authentication → Get started → Sign-in method</b> → turn on <b>Email/Password</b>.</li><li><b>Build → Firestore Database → Create database</b> (any region, production mode).</li><li>Firestore → <b>Rules</b> tab → replace everything with the rules below → <b>Publish</b>.</li><li><b>Project settings (gear) → Your apps → Web (&lt;/&gt;)</b> → register app → copy the <b>firebaseConfig</b> and paste it above.</li><li>Press Save &amp; connect, then create your account.</li></ol>
-  <div class="fld">Firestore rules</div><textarea readonly id="cRules">${esc(RULES)}</textarea>
-  <div class="seg" style="margin-top:8px"><button class="pill" data-c="rules">Copy rules</button><button class="pill" data-c="x">Close</button></div>
-  <div class="note">The Firebase config is safe in a public page: the rules make each account read and write only its own projects. After creating your account, turn off sign-ups in <b>Authentication → Settings → User actions → Enable create (sign-up)</b> to keep the editor private.</div>`;
+ function openCfg(){const b=$("cfgBox");
+  b.innerHTML=`<h3>Cloud database · Firebase</h3><p>${cloud&&user?`Connected · signed in as <b>${esc(user.email||"")}</b>`:cloud?"Connected to Firebase. Sign in to continue.":"Couldn’t reach Firebase — projects are stored only in this browser."}</p>
+  <div class="seg" style="margin-top:8px">${cloud&&user?'<button class="pill" data-c="reload">Reload from cloud</button><button class="pill" data-c="out">Sign out</button>':""}<button class="pill" data-c="x">Close</button></div>`;
   $("bk").classList.add("on");b.classList.add("on")}
  $("cfgBox").onclick=async e=>{const b=e.target.closest("[data-c]");if(!b)return;const a=b.dataset.c;
   if(a=="x")closeCfg();
-  if(a=="rules")toast(await copy(RULES)?"Rules copied":"Select the rules and copy them");
-  if(a=="save"){const o=parseCfg($("cFb").value);if(!o.apiKey||!o.projectId){toast("Paste the whole firebaseConfig (needs apiKey and projectId)");return}if(!o.authDomain)o.authDomain=o.projectId+".firebaseapp.com";lsSet("cc_qr_fb",o);location.reload()}
-  if(a=="clear"){try{localStorage.removeItem("cc_qr_fb")}catch(x){}try{if(auth)await auth.signOut()}catch(x){}location.reload()}
   if(a=="reload"){closeCfg();if(await loadCloud()){toast("Reloaded from cloud");go(view)}}
   if(a=="out"){closeCfg();await auth.signOut();user=null;ready=false;DB=[];SNAP=new Map();closeD();showAuth()}};
 
@@ -1841,7 +1830,7 @@ service cloud.firestore {
   const n=DB.length,btn=DB.reduce((a,r)=>a+Object.keys(r.st.sel||{}).length,0),fav=DB.filter(r=>r.fav).length;
   const avg=n?Math.round(DB.reduce((a,r)=>a+r.url.length,0)/n):0;
   let kb="0";try{kb=((localStorage.getItem(cacheKey())||"").length/1024).toFixed(1)}catch(e){}
-  const bn=cloud?"":`<div class="tile g2 w" style="margin-bottom:12px"><div class="tl"><span>Local storage</span></div><div class="tv" style="font-size:22px">Projects are only saved in this browser</div><div class="seg" style="margin:8px 0 0"><button class="pill dk" data-cfg="1">Connect a database</button></div></div>`;
+  const bn=cloud?"":`<div class="tile g2 w" style="margin-bottom:12px"><div class="tl"><span>Local storage</span></div><div class="tv" style="font-size:22px">Projects are only saved in this browser</div></div>`;
   if(!n){$("v-ov").innerHTML=bn+`<div class="panel"><div class="glow"></div><div class="empty" style="position:relative"><div class="eyebrow">Welcome</div><h1 class="big">Make your first<br>QR page</h1><p>Pick a theme, add your Google review button and social links, then generate a QR that never expires. Every QR you make is saved here so you can manage it later.</p><button class="cta" data-go="ed">Create a QR page</button></div></div>`;return}
   const d0=new Date();d0.setHours(0,0,0,0);const d00=d0.getTime();
   const days=[];for(let i=13;i>=0;i--){const s=d00-i*864e5;days.push(DB.filter(r=>r.cr>=s&&r.cr<s+864e5).length)}
