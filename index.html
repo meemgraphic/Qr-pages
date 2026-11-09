@@ -1678,7 +1678,7 @@ function render(el,d,full,logoSrc){
  let h=`<div class="pg t${d.t||0} ${full?"full":""}" ${fo?`data-f="1" style="--uf:'${fo}'"`:""}>`;
  const ini=`<div class="lgw c">${esc(nm[0].toUpperCase())}</div>`;
  const ch=(nm[0]||"•").replace(/[^\p{L}\p{N}]/gu,"")||"•";
- h+=src?`<div class="lgw ${s}"><img src="${esc(src)}" alt="" onerror="var p=this.parentNode;p.className='lgw c';p.textContent='${ch.toUpperCase()}'"></div>`:ini;
+ h+=src?`<div class="lgw ${s}"><img src="${esc(src)}" alt=""${d.tl&&/^data:image\//.test(d.tl)?` data-tl="${esc(d.tl)}"`:""} onerror="var t=this.dataset.tl;if(t){this.dataset.tl='';this.src=t;return}var p=this.parentNode;p.className='lgw c';p.textContent='${ch.toUpperCase()}'"></div>`:ini;
  h+=`<h1>${esc(nm)}</h1><p>${d.d?esc(d.d):""}</p><div class="btns">`;
  [...(d.k||[])].sort((a,b)=>(b[0]=="review")-(a[0]=="review")).forEach(([k,v])=>{if(P[k]&&v)h+=`<a class="${k=="review"?"feat":""}" href="${esc(P[k][1](v))}" target="_blank" rel="noopener"><span class="g"><svg viewBox="0 0 24 24">${I[k]}</svg></span>${P[k][0]}</a>`});
  h+=`</div><div class="ft"><a href="https://clayncode.netlify.app" target="_blank" rel="noopener"><span>made by</span><img src="${DARK.includes(+d.t||0)?LOGOW:LOGOK}" alt="clay&code"></a></div></div>`;
@@ -1699,7 +1699,7 @@ if(location.hash.startsWith("#p=")){
  const GR=["linear-gradient(150deg,#7db07a,#c9d98a 60%,#f1e9a0)","linear-gradient(150deg,#f4e079,#f3b65a 60%,#ee9a52)","linear-gradient(150deg,#f3b46a,#e88f6e 55%,#d6a29a)","linear-gradient(150deg,#9fc3c9,#bcd2b0 55%,#e8dfa0)","linear-gradient(150deg,#e8b074,#c8b79a 50%,#8fa8c0)","linear-gradient(150deg,#a9a3f0,#c9c6f5 55%,#e8e6fb)"];
  const STAR='<svg viewBox="0 0 24 24"><path d="M12 3l2.8 5.8 6.2.9-4.5 4.4 1 6.2L12 17.300 6.500 20.300l1-6.200L3 9.700l6.200-.9z"/></svg>';
  const SN={s:"Square",r:"Rounded",d:"Dots",m:"Diamond"};
- const S0=()=>({t:0,s:"c",f:"",n:"",d:"",l:"",wt:false,sel:{review:""},img:null,logo:null});
+ const S0=()=>({t:0,s:"c",f:"",n:"",d:"",l:"",wt:false,sel:{review:""},img:null,logo:null,logoUrl:"",logoFor:""});
  const Q0=()=>({s:"r",c:1,custom:null,tr:false,ll:false});
  const S=S0(),Q=Q0();
  let DB=lsGet(LS,[]);if(!Array.isArray(DB))DB=[];
@@ -1928,17 +1928,19 @@ service cloud.firestore {
  $("host").oninput=()=>{touch();draw()};
  $("pick").onclick=()=>$("lf").click();
  $("lf").onchange=e=>{const f=e.target.files[0];if(!f)return;const im=new Image();im.onload=()=>{S.img=im;proc();touch();draw()};im.src=URL.createObjectURL(f)};
- $("rm").onclick=()=>{S.img=null;S.logo=null;$("lf").value="";touch();draw()};
+ $("rm").onclick=()=>{S.img=null;S.logo=null;S.logoUrl="";S.logoFor="";$("lf").value="";touch();draw()};
  $("wt").onchange=()=>{S.wt=$("wt").checked;proc();touch();draw()};
  $("shp").onclick=e=>{const b=e.target.closest("[data-s]");if(b){S.s=b.dataset.s;proc();touch();draw()}};
  function proc(){if(!S.img)return;const im=S.img,c=document.createElement("canvas"),x=c.getContext("2d");
-  if(S.s=="f"){const k=Math.min(1,360/Math.max(im.width,im.height));c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);x.drawImage(im,0,0,c.width,c.height)}
-  else{c.width=c.height=256;const m=Math.min(im.width,im.height);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,256,256)}
+  if(S.s=="f"){const k=Math.min(1,720/Math.max(im.width,im.height));c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);x.drawImage(im,0,0,c.width,c.height)}
+  else{c.width=c.height=512;const m=Math.min(im.width,im.height);x.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,512,512)}
   if(S.wt){const d=x.getImageData(0,0,c.width,c.height),p=d.data;for(let i=0;i<p.length;i+=4){const mn=Math.min(p[i],p[i+1],p[i+2]);if(mn>245)p[i+3]=0;else if(mn>215)p[i+3]=p[i+3]*(245-mn)/30}x.putImageData(d,0,0)}
   S.logo=c.toDataURL("image/png")}
+ let tiny="";
+ function mkTiny(px){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,px/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(i.width*k));c.height=Math.max(1,Math.round(i.height*k));c.getContext("2d").drawImage(i,0,0,c.width,c.height);r(c.toDataURL("image/webp",.7))};i.onerror=()=>r("");i.src=S.logo})}
  const data=()=>{const o={t:S.t,s:S.s,n:S.n.trim(),k:Object.entries(S.sel).filter(x=>x[1])};
   if(S.d.trim())o.d=S.d.trim();if(S.f)o.f=S.f;
-  if(S.logo)o.l=slug();else if(S.l)o.l=S.l;return o};
+  if(S.logo){o.l=slug();if(tiny)o.tl=tiny}else if(S.l)o.l=S.l;return o};
  const curQ=()=>({s:Q.s,cols:colsOf(Q),tr:Q.tr,logo:Q.ll&&S.logo?S.logo:null});
  function touch(){if(curUrl&&view=="ed"){$("dirty").classList.remove("hide")}}
  function draw(rebuild){
@@ -1962,14 +1964,14 @@ service cloud.firestore {
  async function showQR(){if(!curUrl)return false;try{const c=await makeQR(curUrl,curQ());const q=$("qr");q.innerHTML="";q.appendChild(c);canvas=c;$("out").classList.remove("hide");return true}catch(e){toast("Too much data for one QR. Remove a button or shorten the text.");return false}}
  function restyle(){draw();if(curUrl){showQR();if(editId)$("dirty").classList.remove("hide")}}
  function setMode(){const r=editId&&DB.find(x=>x.id==editId);$("edMode").textContent=r?"Editing · "+r.name:"New page";$("gen").textContent=r?"Update & save":"Generate & save"}
- function logoNote(){const on=!!S.logo;$("dlg").classList.toggle("hide",!on);$("lgnote").classList.toggle("hide",!on);if(on)$("lgnote").textContent="Download the logo file and upload it to the same folder as the page, keeping the name "+slug()+"."}
+ function logoNote(){const on=!!S.logo;$("dlg").classList.toggle("hide",!on);$("lgnote").classList.toggle("hide",!on);if(on)$("lgnote").textContent="Download the logo and upload it to the same folder as the page, keeping the name "+slug()+"."}
  function resetOut(){$("out").classList.add("hide");$("qr").innerHTML="";$("dirty").classList.add("hide");canvas=null;setMode()}
  function syncInputs(){$("n").value=S.n;$("d").value=S.d;$("l").value=S.l;$("wt").checked=S.wt;$("qt").checked=Q.tr;$("ql").checked=Q.ll;if(Q.custom)$("qcc").value=Q.custom;$("qcc").dataset.on=Q.custom?"1":"0"}
  function newPage(){Object.assign(S,S0());Object.assign(Q,Q0());editId=null;curUrl=null;
   $("host").value=lsGet(LH,"")||(location.protocol.startsWith("http")?location.origin+location.pathname:"");
   $("lf").value="";syncInputs();resetOut();go("ed");draw(true);logoNote()}
  function loadRec(r,asNew){const st=r.st,q=r.qs||{};
-  Object.assign(S,{t:st.t||0,s:st.s||"c",f:st.f||"",n:st.n||r.name||"",d:st.d||"",l:st.l||"",wt:!!st.wt,sel:{...(st.sel||{})},img:null,logo:st.logo||null});
+  Object.assign(S,{t:st.t||0,s:st.s||"c",f:st.f||"",n:st.n||r.name||"",d:st.d||"",l:st.l||"",wt:!!st.wt,sel:{...(st.sel||{})},img:null,logo:st.logo||null,logoUrl:st.logoUrl||"",logoFor:st.logoFor||""});
   if(S.logo){const im=new Image();im.src=S.logo;S.img=im}
   Object.assign(Q,{s:q.s||"r",c:q.c==null?1:q.c,custom:q.custom||null,tr:!!q.tr,ll:!!q.ll});
   editId=asNew?null:r.id;curUrl=asNew?null:r.url;
@@ -1979,10 +1981,11 @@ service cloud.firestore {
   if(!S.n.trim()){toast("Add a company name first");return}
   if(!host){toast("Enter the address where this file is hosted");return}
   if(!/^https?:\/\//i.test(host))host="https://"+host;$("host").value=host;lsSet(LH,host);
+  tiny="";
   curUrl=host.split("#")[0]+"#p="+await enc(data());
   if(!await showQR())return;
   const now=Date.now();let r=editId&&DB.find(x=>x.id==editId);
-  const body={name:S.n.trim(),host,url:curUrl,upd:now,st:{t:S.t,s:S.s,f:S.f,n:S.n.trim(),d:S.d.trim(),l:S.l,wt:S.wt,sel:Object.fromEntries(Object.entries(S.sel).filter(x=>x[1])),logo:S.logo},qs:{s:Q.s,c:Q.c,custom:Q.custom,tr:Q.tr,ll:Q.ll&&!!S.logo}};
+  const body={name:S.n.trim(),host,url:curUrl,upd:now,st:{t:S.t,s:S.s,f:S.f,n:S.n.trim(),d:S.d.trim(),l:S.l,wt:S.wt,sel:Object.fromEntries(Object.entries(S.sel).filter(x=>x[1])),logo:S.logo,logoUrl:S.logoUrl,logoFor:S.logoFor},qs:{s:Q.s,c:Q.c,custom:Q.custom,tr:Q.tr,ll:Q.ll&&!!S.logo}};
   if(r){Object.assign(r,body);toast("Updated in My QRs")}else{r={id:uid(),cr:now,fav:false,note:"",...body};DB.unshift(r);editId=r.id;toast("Saved to My QRs")}
   persist();$("dirty").classList.add("hide");logoNote();setMode();draw()};
  $("dl").onclick=()=>{if(canvas)dl(($("n").value||"qr").replace(/\W+/g,"-")+"-qr.png",canvas.toDataURL("image/png"))};
