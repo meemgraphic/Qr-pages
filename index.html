@@ -1678,11 +1678,13 @@ function render(el,d,full,logoSrc){
  let h=`<div class="pg t${d.t||0} ${full?"full":""}" ${fo?`data-f="1" style="--uf:'${fo}'"`:""}>`;
  const ini=`<div class="lgw c">${esc(nm[0].toUpperCase())}</div>`;
  const ch=(nm[0]||"•").replace(/[^\p{L}\p{N}]/gu,"")||"•";
- h+=src?`<div class="lgw ${s}"><img src="${esc(src)}" alt=""${d.tl&&/^data:image\//.test(d.tl)?` data-tl="${esc(d.tl)}"`:""} onerror="var t=this.dataset.tl;if(t){this.dataset.tl='';this.src=t;return}var p=this.parentNode;p.className='lgw c';p.textContent='${ch.toUpperCase()}'"></div>`:ini;
+ const tlOk=d.tl&&/^data:image\//.test(d.tl);
+ h+=src&&tlOk&&!logoSrc?`<div class="lgw ${s}"><img src="${esc(d.tl)}" alt="" data-hi="${esc(src)}"></div>`:src?`<div class="lgw ${s}"><img src="${esc(src)}" alt=""${d.tl&&/^data:image\//.test(d.tl)?` data-tl="${esc(d.tl)}"`:""} onerror="var t=this.dataset.tl;if(t){this.dataset.tl='';this.src=t;return}var p=this.parentNode;p.className='lgw c';p.textContent='${ch.toUpperCase()}'"></div>`:ini;
  h+=`<h1>${esc(nm)}</h1><p>${d.d?esc(d.d):""}</p><div class="btns">`;
  [...(d.k||[])].sort((a,b)=>(b[0]=="review")-(a[0]=="review")).forEach(([k,v])=>{if(P[k]&&v)h+=`<a class="${k=="review"?"feat":""}" href="${esc(P[k][1](v))}" target="_blank" rel="noopener"><span class="g"><svg viewBox="0 0 24 24">${I[k]}</svg></span>${P[k][0]}</a>`});
  h+=`</div><div class="ft"><a href="https://clayncode.netlify.app" target="_blank" rel="noopener"><span>made by</span><img src="${DARK.includes(+d.t||0)?LOGOW:LOGOK}" alt="clay&code"></a></div></div>`;
- el.innerHTML=h}
+ el.innerHTML=h;
+ el.querySelectorAll("img[data-hi]").forEach(im=>{const t=new Image();t.onload=()=>{im.src=t.src};t.src=im.dataset.hi})}
 if(location.hash.startsWith("#p=")){
  const v=document.getElementById("viewer");v.classList.remove("hide");
  dec(location.hash.slice(3)).then(d=>{document.title=d.n||"Contact";loadFont(d.f);render(v,d,true)}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page link looks incomplete.</p>");
@@ -1937,7 +1939,7 @@ service cloud.firestore {
   if(S.wt){const d=x.getImageData(0,0,c.width,c.height),p=d.data;for(let i=0;i<p.length;i+=4){const mn=Math.min(p[i],p[i+1],p[i+2]);if(mn>245)p[i+3]=0;else if(mn>215)p[i+3]=p[i+3]*(245-mn)/30}x.putImageData(d,0,0)}
   S.logo=c.toDataURL("image/png")}
  let tiny="";
- function mkTiny(px){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,px/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(i.width*k));c.height=Math.max(1,Math.round(i.height*k));c.getContext("2d").drawImage(i,0,0,c.width,c.height);r(c.toDataURL("image/webp",.7))};i.onerror=()=>r("");i.src=S.logo})}
+ function mkTiny(px,q){return new Promise(r=>{const i=new Image();i.onload=()=>{const k=Math.min(1,px/Math.max(i.width,i.height)),c=document.createElement("canvas");c.width=Math.max(1,Math.round(i.width*k));c.height=Math.max(1,Math.round(i.height*k));c.getContext("2d").drawImage(i,0,0,c.width,c.height);r(c.toDataURL("image/webp",q||.7))};i.onerror=()=>r("");i.src=S.logo})}
  const data=()=>{const o={t:S.t,s:S.s,n:S.n.trim(),k:Object.entries(S.sel).filter(x=>x[1])};
   if(S.d.trim())o.d=S.d.trim();if(S.f)o.f=S.f;
   if(S.logo){o.l=slug();if(tiny)o.tl=tiny}else if(S.l)o.l=S.l;return o};
@@ -1964,7 +1966,7 @@ service cloud.firestore {
  async function showQR(){if(!curUrl)return false;try{const c=await makeQR(curUrl,curQ());const q=$("qr");q.innerHTML="";q.appendChild(c);canvas=c;$("out").classList.remove("hide");return true}catch(e){toast("Too much data for one QR. Remove a button or shorten the text.");return false}}
  function restyle(){draw();if(curUrl){showQR();if(editId)$("dirty").classList.remove("hide")}}
  function setMode(){const r=editId&&DB.find(x=>x.id==editId);$("edMode").textContent=r?"Editing · "+r.name:"New page";$("gen").textContent=r?"Update & save":"Generate & save"}
- function logoNote(){const on=!!S.logo;$("dlg").classList.toggle("hide",!on);$("lgnote").classList.toggle("hide",!on);if(on)$("lgnote").textContent="Download the logo and upload it to the same folder as the page, keeping the name "+slug()+"."}
+ function logoNote(){const on=!!S.logo;$("dlg").classList.toggle("hide",!on);$("lgnote").classList.toggle("hide",!on);if(on)$("lgnote").textContent="The logo is built into the link, so it shows on the web with nothing to upload. To make it sharper, optionally upload the downloaded "+slug()+" to the same folder as the page."}
  function resetOut(){$("out").classList.add("hide");$("qr").innerHTML="";$("dirty").classList.add("hide");canvas=null;setMode()}
  function syncInputs(){$("n").value=S.n;$("d").value=S.d;$("l").value=S.l;$("wt").checked=S.wt;$("qt").checked=Q.tr;$("ql").checked=Q.ll;if(Q.custom)$("qcc").value=Q.custom;$("qcc").dataset.on=Q.custom?"1":"0"}
  function newPage(){Object.assign(S,S0());Object.assign(Q,Q0());editId=null;curUrl=null;
@@ -1982,6 +1984,10 @@ service cloud.firestore {
   if(!host){toast("Enter the address where this file is hosted");return}
   if(!/^https?:\/\//i.test(host))host="https://"+host;$("host").value=host;lsSet(LH,host);
   tiny="";
+  if(S.logo){const base=host.split("#")[0]+"#p=";
+   for(const [px,q] of [[160,.8],[128,.75],[112,.7],[96,.7],[80,.65],[64,.6],[48,.55],[40,.5]]){
+    const t=await mkTiny(px,q);if(!t)continue;tiny=t;
+    if((base+await enc(data())).length<=1700)break;tiny=""}}
   curUrl=host.split("#")[0]+"#p="+await enc(data());
   if(!await showQR())return;
   const now=Date.now();let r=editId&&DB.find(x=>x.id==editId);
