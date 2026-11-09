@@ -1491,7 +1491,6 @@ button{cursor:pointer;border:0;background:none}
 .x{width:36px;height:36px;border-radius:50%;background:#fff;flex:none;font-size:18px}
 .dq{border-radius:22px;margin:16px 0 12px;padding:18px;display:grid;place-items:center}
 .dq canvas,.dq img{width:min(240px,100%);height:auto;border-radius:12px;background:#fff;padding:8px;display:block}
-.dq #dqr{width:100%;display:flex;justify-content:center}.dq canvas,.dq img{margin:0 auto}
 .acts{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
 .acts .pill{background:#fff}.acts .pill.dk{background:var(--ink)}.acts .pill.dg{background:#e0603e22}
 .sec{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);margin:20px 0 6px}
@@ -1519,6 +1518,21 @@ button{cursor:pointer;border:0;background:none}
 .made:hover{opacity:1}.made img{height:13px;display:block}
 @media(min-width:768px){.pg.full{padding-top:64px}}
 
+.dq #dqr{width:100%;display:flex;justify-content:center}.dq canvas,.dq img{margin:0 auto}
+.auth{position:fixed;inset:0;z-index:90;background:var(--bg);display:grid;place-items:center;padding:16px;overflow:auto}
+.authc{width:min(420px,100%)}
+.dlg.wide{width:min(560px,94vw);max-height:88vh;overflow:auto;text-align:left}
+.dlg .in{background:#f3f2ef;border-color:transparent}.dlg .fld{color:var(--mut)}
+.dlg .seg{justify-content:flex-start}
+.dlg.wide h3{font-weight:300;font-size:28px}
+.dlg textarea{width:100%;border:0;background:#f3f2ef;border-radius:14px;padding:10px 12px;font-size:11px;min-height:150px;color:var(--mut);outline:none;resize:vertical}
+.steps{font-size:13px;color:var(--mut);line-height:1.6;padding-left:18px;margin-bottom:10px}
+#cfgBtn{padding:11px 14px}
+@media(max-width:600px){#cfgBtn .hm{display:none}}
+@media(max-width:760px){.top .cta{margin-left:0}#cfgBtn{margin-left:auto}}
+
+.dlg textarea.cfgta{min-height:110px;font-size:12px;color:var(--ink)}
+
 </style></head><body>
 <div id="viewer" class="hide"></div>
 <div id="builder" class="shell hide">
@@ -1529,6 +1543,7 @@ button{cursor:pointer;border:0;background:none}
   <button data-v="ed"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>Editor</button>
   <button data-v="qs"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="1.5"/><rect x="14.5" y="3.5" width="6" height="6" rx="1.5"/><rect x="3.5" y="14.5" width="6" height="6" rx="1.5"/><path d="M14.5 14.5h2v2M20.5 14.5v0M14.5 20.5h2M20.5 17.5v3h-3"/></svg>My QRs<span class="cnt" id="cnt"></span></button>
  </nav>
+ <button class="cta light" id="cfgBtn" title="Cloud database">☁</button>
  <button class="cta" id="newBtn">+ New</button>
 </header>
 <main>
@@ -1593,9 +1608,16 @@ button{cursor:pointer;border:0;background:none}
 </main>
 <a class="made" href="https://clayncode.netlify.app" target="_blank" rel="noopener"><span>made by</span><img id="madeImg" alt="clay&amp;code"></a>
 </div>
+<div class="auth hide" id="auth"><div class="panel authc"><div class="orb" style="margin-bottom:14px"></div><div class="eyebrow">QR Pages · by clayncode</div><h1 class="big" style="font-size:40px">Sign in</h1>
+ <p class="note" style="margin:8px 0 16px">Your QR projects are stored in your private cloud database.</p>
+ <input class="in" id="aEm" type="email" placeholder="Email" autocomplete="email" style="margin-bottom:8px"><input class="in" id="aPw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password">
+ <div id="aMsg" class="note" style="min-height:18px;margin:8px 0"></div>
+ <div class="seg" style="margin:0"><button class="cta" id="aIn" style="flex:1">Sign in</button><button class="pill" id="aUp" style="flex:1;justify-content:center">Create account</button></div>
+ <button class="note" id="aCfg" style="text-decoration:underline;margin-top:14px">Cloud settings</button></div></div>
 <div class="bk" id="bk"></div>
 <aside class="dr" id="dr" aria-live="polite"></aside>
 <div class="dlg" id="dlgBox"></div>
+<div class="dlg wide" id="cfgBox"></div>
 <div class="bulk hide" id="bulk"></div>
 <div class="toast" id="toast"></div>
 <input type="file" id="imp" class="hide" accept=".json,application/json">
@@ -1671,7 +1693,7 @@ if(location.hash.startsWith("#p=")){
  const LS="cc_qr_pages_v1",LH="cc_qr_host";
  const lsGet=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}};
  const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast("Couldn’t save here — storage is full or blocked. Export a backup.");return false}};
- const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+ const uid=()=>window.crypto&&crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2,9)+Date.now().toString(36);
  const fmt=t=>new Date(t).toLocaleDateString(undefined,{day:"numeric",month:"short",year:"numeric"});
  const fmtT=t=>new Date(t).toLocaleString(undefined,{day:"numeric",month:"short",year:"numeric",hour:"numeric",minute:"2-digit"});
  const GR=["linear-gradient(150deg,#7db07a,#c9d98a 60%,#f1e9a0)","linear-gradient(150deg,#f4e079,#f3b65a 60%,#ee9a52)","linear-gradient(150deg,#f3b46a,#e88f6e 55%,#d6a29a)","linear-gradient(150deg,#9fc3c9,#bcd2b0 55%,#e8dfa0)","linear-gradient(150deg,#e8b074,#c8b79a 50%,#8fa8c0)","linear-gradient(150deg,#a9a3f0,#c9c6f5 55%,#e8e6fb)"];
@@ -1692,7 +1714,83 @@ if(location.hash.startsWith("#p=")){
  const dlBlob=(name,text)=>{const u=URL.createObjectURL(new Blob([text],{type:"application/json"}));dl(name,u);setTimeout(()=>URL.revokeObjectURL(u),4000)};
  const copy=async t=>{try{await navigator.clipboard.writeText(t);return true}catch(e){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();let ok=false;try{ok=document.execCommand("copy")}catch(_){}a.remove();return ok}};
  const slug=()=>(S.n||"logo").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-logo.png";
- const persist=()=>{lsSet(LS,DB);$("cnt").textContent=DB.length||""};
+ /* ---------- cloud database (Firebase) ---------- */
+ const CFG0={apiKey:"",authDomain:"",projectId:"",appId:""}; /* optional: paste your firebaseConfig values here instead of using the Cloud button */
+ const hard=!!(CFG0.apiKey&&CFG0.projectId),cfg=hard?CFG0:lsGet("cc_qr_fb",{});
+ let auth=null,fs=null,user=null,ready=false,cloud=false,SNAP=new Map(),syncT;
+ const RULES=`rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{uid}/projects/{id} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}`;
+ const FBV="10.12.2";
+ const sj=o=>JSON.stringify(o,(k,v)=>v&&typeof v=="object"&&!Array.isArray(v)?Object.fromEntries(Object.keys(v).sort().map(x=>[x,v[x]])):v);
+ const cacheKey=()=>cloud&&user?LS+"_"+user.id:LS;
+ const colRef=()=>fs.collection("users").doc(user.id).collection("projects");
+ const wrap=u=>u?{id:u.uid,email:u.email}:null;
+ const fbErr=e=>{const c=(e&&e.code)||"";
+  if(c.includes("operation-not-allowed"))return "Turn on Email/Password in Firebase → Authentication → Sign-in method.";
+  if(c.includes("permission-denied"))return "Permission denied — publish the Firestore rules (see the ☁ dialog).";
+  if(c.includes("invalid-credential")||c.includes("wrong-password")||c.includes("user-not-found"))return "Wrong email or password.";
+  if(c.includes("email-already-in-use"))return "That email already has an account — press Sign in.";
+  if(c.includes("weak-password"))return "Password is too weak (use 6+ characters).";
+  if(c.includes("invalid-email"))return "That email address doesn’t look right.";
+  if(c.includes("api-key"))return "The API key looks wrong. Re-copy your firebaseConfig.";
+  if(c.includes("too-many-requests"))return "Too many attempts. Wait a minute and try again.";
+  return (e&&e.message)||String(e)};
+ function setSync(t){const b=$("cfgBtn");if(b)b.innerHTML=`<span aria-hidden="true">☁</span> <span class="hm">${esc(t)}</span>`}
+ function persist(){lsSet(cacheKey(),DB);$("cnt").textContent=DB.length||"";if(cloud&&user&&ready){setSync("Saving…");clearTimeout(syncT);syncT=setTimeout(doSync,700)}}
+ async function runBatch(items,fn){for(let i=0;i<items.length;i+=400){const b=fs.batch();items.slice(i,i+400).forEach(x=>fn(b,x));await b.commit()}}
+ async function doSync(){
+  const cur=new Map(DB.map(r=>[r.id,sj(r)]));
+  const up=DB.filter(r=>SNAP.get(r.id)!==cur.get(r.id)),del=[...SNAP.keys()].filter(id=>!cur.has(id));
+  try{
+   await runBatch(up,(b,r)=>b.set(colRef().doc(r.id),{name:r.name||"",upd:r.upd||Date.now(),json:cur.get(r.id)}));
+   await runBatch(del,(b,id)=>b.delete(colRef().doc(id)));
+   SNAP=cur;setSync("Saved")
+  }catch(e){setSync("Sync failed");toast("Cloud sync failed: "+fbErr(e)+" Saved locally, will retry on next change.")}}
+ async function loadCloud(){setSync("Loading…");ready=false;
+  try{const snap=await colRef().get();
+   DB=snap.docs.map(d=>{try{return JSON.parse(d.data().json)}catch(x){return null}}).filter(Boolean)}
+  catch(e){DB=lsGet(cacheKey(),[]);setSync("Offline");toast("Couldn’t load cloud projects: "+fbErr(e));return false}
+  SNAP=new Map(DB.map(r=>[r.id,sj(r)]));ready=true;setSync("Saved");lsSet(cacheKey(),DB);
+  if(!DB.length){const loc=lsGet(LS,[]);if(Array.isArray(loc)&&loc.length&&await ask("Upload your local projects?","You have "+loc.length+" QR project"+(loc.length>1?"s":"")+" saved in this browser. Copy them to your cloud database?","Upload")){DB=loc;persist()}}
+  $("cnt").textContent=DB.length||"";return true}
+ const loadJS=src=>new Promise(res=>{const s=document.createElement("script");s.src=src;s.onload=()=>res(true);s.onerror=()=>res(false);document.head.appendChild(s)});
+ async function loadFB(){if(window.firebase&&firebase.firestore)return true;const b="https://www.gstatic.com/firebasejs/"+FBV+"/firebase-";
+  for(const n of ["app","auth","firestore"])if(!await loadJS(b+n+"-compat.js"))return false;return true}
+ const aMsg=(t,ok)=>{const e=$("aMsg");e.textContent=t;e.style.color=ok?"#2d7a3a":"#b83a1c"};
+ const showAuth=()=>{$("auth").classList.remove("hide");aMsg("")};
+ async function afterLogin(){$("auth").classList.add("hide");$("aPw").value="";await loadCloud();start()}
+ $("aIn").onclick=async()=>{const email=$("aEm").value.trim(),password=$("aPw").value;if(!email||!password){aMsg("Enter your email and password");return}
+  aMsg("Signing in…",1);try{const c=await auth.signInWithEmailAndPassword(email,password);user=wrap(c.user)}catch(e){aMsg(fbErr(e));return}await afterLogin()};
+ $("aUp").onclick=async()=>{const email=$("aEm").value.trim(),password=$("aPw").value;if(!email||password.length<6){aMsg("Enter an email and a password of 6+ characters");return}
+  aMsg("Creating account…",1);try{const c=await auth.createUserWithEmailAndPassword(email,password);user=wrap(c.user)}catch(e){aMsg(fbErr(e));return}await afterLogin()};
+ $("aPw").onkeydown=e=>{if(e.key=="Enter")$("aIn").click()};
+ $("aCfg").onclick=()=>openCfg();
+ $("cfgBtn").onclick=()=>openCfg();
+ function closeCfg(){$("cfgBox").classList.remove("on");if(!openId&&!$("dlgBox").classList.contains("on"))$("bk").classList.remove("on")}
+ function parseCfg(t){const o={};for(const m of t.matchAll(/["']?(apiKey|authDomain|projectId|storageBucket|messagingSenderId|appId|measurementId)["']?\s*:\s*["']([^"']+)["']/g))o[m[1]]=m[2];return o}
+ function openCfg(){const b=$("cfgBox");const shown=cfg&&cfg.apiKey?Object.entries(cfg).map(([k,v])=>`  ${k}: "${v}"`).join(",\n"):"";
+  b.innerHTML=`<h3>Cloud database · Firebase</h3><p>${cloud&&user?`Connected · signed in as <b>${esc(user.email||"")}</b>`:cloud?"Connected to Firebase. Sign in to continue.":"Not connected — projects are stored only in this browser."}</p>
+  <div class="fld">Paste your firebaseConfig</div><textarea id="cFb" class="cfgta" placeholder='const firebaseConfig = {\n  apiKey: "AIza…",\n  authDomain: "your-app.firebaseapp.com",\n  projectId: "your-app",\n  appId: "1:123:web:abc"\n};' ${hard?"disabled":""}>${esc(shown)}</textarea>
+  <div class="seg" style="margin-top:8px">${hard?"":'<button class="pill dk" data-c="save">Save &amp; connect</button>'}${cloud&&user?'<button class="pill" data-c="reload">Reload from cloud</button><button class="pill" data-c="out">Sign out</button>':""}${!hard&&cfg&&cfg.apiKey?'<button class="pill" data-c="clear">Use local only</button>':""}</div>
+  <div class="sec">One-time setup in Firebase console</div>
+  <ol class="steps"><li>Open <b>console.firebase.google.com</b> → <b>Add project</b> (Google Analytics can be off).</li><li><b>Build → Authentication → Get started → Sign-in method</b> → turn on <b>Email/Password</b>.</li><li><b>Build → Firestore Database → Create database</b> (any region, production mode).</li><li>Firestore → <b>Rules</b> tab → replace everything with the rules below → <b>Publish</b>.</li><li><b>Project settings (gear) → Your apps → Web (&lt;/&gt;)</b> → register app → copy the <b>firebaseConfig</b> and paste it above.</li><li>Press Save &amp; connect, then create your account.</li></ol>
+  <div class="fld">Firestore rules</div><textarea readonly id="cRules">${esc(RULES)}</textarea>
+  <div class="seg" style="margin-top:8px"><button class="pill" data-c="rules">Copy rules</button><button class="pill" data-c="x">Close</button></div>
+  <div class="note">The Firebase config is safe in a public page: the rules make each account read and write only its own projects. After creating your account, turn off sign-ups in <b>Authentication → Settings → User actions → Enable create (sign-up)</b> to keep the editor private.</div>`;
+  $("bk").classList.add("on");b.classList.add("on")}
+ $("cfgBox").onclick=async e=>{const b=e.target.closest("[data-c]");if(!b)return;const a=b.dataset.c;
+  if(a=="x")closeCfg();
+  if(a=="rules")toast(await copy(RULES)?"Rules copied":"Select the rules and copy them");
+  if(a=="save"){const o=parseCfg($("cFb").value);if(!o.apiKey||!o.projectId){toast("Paste the whole firebaseConfig (needs apiKey and projectId)");return}if(!o.authDomain)o.authDomain=o.projectId+".firebaseapp.com";lsSet("cc_qr_fb",o);location.reload()}
+  if(a=="clear"){try{localStorage.removeItem("cc_qr_fb")}catch(x){}try{if(auth)await auth.signOut()}catch(x){}location.reload()}
+  if(a=="reload"){closeCfg();if(await loadCloud()){toast("Reloaded from cloud");go(view)}}
+  if(a=="out"){closeCfg();await auth.signOut();user=null;ready=false;DB=[];SNAP=new Map();closeD();showAuth()}};
 
  /* ---------- QR rendering ---------- */
  async function makeQR(url,o,SZ){SZ=SZ||1024;
@@ -1742,8 +1840,9 @@ if(location.hash.startsWith("#p=")){
  function drawOv(){
   const n=DB.length,btn=DB.reduce((a,r)=>a+Object.keys(r.st.sel||{}).length,0),fav=DB.filter(r=>r.fav).length;
   const avg=n?Math.round(DB.reduce((a,r)=>a+r.url.length,0)/n):0;
-  let kb="0";try{kb=((localStorage.getItem(LS)||"").length/1024).toFixed(1)}catch(e){}
-  if(!n){$("v-ov").innerHTML=`<div class="panel"><div class="glow"></div><div class="empty" style="position:relative"><div class="eyebrow">Welcome</div><h1 class="big">Make your first<br>QR page</h1><p>Pick a theme, add your Google review button and social links, then generate a QR that never expires. Every QR you make is saved here so you can manage it later.</p><button class="cta" data-go="ed">Create a QR page</button></div></div>`;return}
+  let kb="0";try{kb=((localStorage.getItem(cacheKey())||"").length/1024).toFixed(1)}catch(e){}
+  const bn=cloud?"":`<div class="tile g2 w" style="margin-bottom:12px"><div class="tl"><span>Local storage</span></div><div class="tv" style="font-size:22px">Projects are only saved in this browser</div><div class="seg" style="margin:8px 0 0"><button class="pill dk" data-cfg="1">Connect a database</button></div></div>`;
+  if(!n){$("v-ov").innerHTML=bn+`<div class="panel"><div class="glow"></div><div class="empty" style="position:relative"><div class="eyebrow">Welcome</div><h1 class="big">Make your first<br>QR page</h1><p>Pick a theme, add your Google review button and social links, then generate a QR that never expires. Every QR you make is saved here so you can manage it later.</p><button class="cta" data-go="ed">Create a QR page</button></div></div>`;return}
   const d0=new Date();d0.setHours(0,0,0,0);const d00=d0.getTime();
   const days=[];for(let i=13;i>=0;i--){const s=d00-i*864e5;days.push(DB.filter(r=>r.cr>=s&&r.cr<s+864e5).length)}
   const mx=Math.max(1,...days);
@@ -1752,13 +1851,13 @@ if(location.hash.startsWith("#p=")){
   const pe=Object.entries(pc).sort((a,b)=>b[1]-a[1]).slice(0,6),pm=pe.length?pe[0][1]:1;
   const tc={};DB.forEach(r=>{const t=TH[r.st.t||0][0];tc[t]=(tc[t]||0)+1});
   const recent=[...DB].sort((a,b)=>b.upd-a.upd).slice(0,5);
-  $("v-ov").innerHTML=`
+  $("v-ov").innerHTML=bn+`
   <div class="panel"><div class="glow"></div><div class="hd"><div><div class="eyebrow">Dashboard · stored in this browser</div><h1 class="big">Your QR<br>Overview</h1></div><button class="cta" data-go="ed">+ New QR page</button></div></div>
   <div class="ov">
    <div class="tile g1"><div class="tl"><span>QR pages</span></div><div class="tv">${n}</div><div class="note">${fav} favorite${fav==1?"":"s"}</div></div>
    <div class="tile g2"><div class="tl"><span>Buttons</span></div><div class="tv">${btn}</div><div class="note">${(btn/n).toFixed(1)} per page</div></div>
    <div class="tile g3"><div class="tl"><span>Avg link size</span></div><div class="tv">${avg}<small>chars</small></div><div class="note">Shorter = easier to scan</div></div>
-   <div class="tile g4"><div class="tl"><span>Storage used</span></div><div class="tv">${kb}<small>KB</small></div><div class="note">Back up from My QRs</div></div>
+   <div class="tile g4"><div class="tl"><span>${cloud?"Cloud · cache":"Storage used"}</span></div><div class="tv">${kb}<small>KB</small></div><div class="note">Back up from My QRs</div></div>
    <div class="tile g5 c2"><div class="tl"><span>Created · last 14 days</span><span>${days.reduce((a,b)=>a+b,0)} new</span></div>
     <svg class="chart" viewBox="0 0 280 100">${bars}<text x="3" y="94">14 days ago</text><text x="277" y="94" text-anchor="end">today</text></svg></div>
    <div class="tile g1 c2"><div class="tl"><span>Most used buttons</span></div>
@@ -1769,7 +1868,7 @@ if(location.hash.startsWith("#p=")){
     <div class="note" style="margin-top:16px">These QR codes are static: they never expire and need no server, so scans aren’t counted. If you want scan stats later, a redirect link service can be added.</div></div>
   </div>`;
   fillThumbs($("v-ov"))}
- $("v-ov").onclick=e=>{const g=e.target.closest("[data-go]");if(g){g.dataset.go=="ed"?newPage():go(g.dataset.go);return}const o=e.target.closest("[data-open]");if(o){go("qs");openD(o.dataset.open)}};
+ $("v-ov").onclick=e=>{if(e.target.closest("[data-cfg]")){openCfg();return}const g=e.target.closest("[data-go]");if(g){g.dataset.go=="ed"?newPage():go(g.dataset.go);return}const o=e.target.closest("[data-open]");if(o){go("qs");openD(o.dataset.open)}};
 
  /* ---------- my QRs ---------- */
  function filtered(){const q=$("q").value.trim().toLowerCase();let L=DB.filter(r=>{if(flt=="fav"&&!r.fav)return false;if(!q)return true;return (r.name+" "+(r.note||"")+" "+Object.keys(r.st.sel||{}).join(" ")+" "+(r.host||"")).toLowerCase().includes(q)});
@@ -1801,7 +1900,7 @@ if(location.hash.startsWith("#p=")){
 
  /* ---------- detail drawer ---------- */
  const closeD=()=>{openId=null;$("dr").classList.remove("on");$("bk").classList.remove("on")};
- $("bk").onclick=()=>{if($("dlgBox").classList.contains("on"))return;closeD()};
+ $("bk").onclick=()=>{if($("dlgBox").classList.contains("on"))return;if($("cfgBox").classList.contains("on")){closeCfg();return}closeD()};
  document.addEventListener("keydown",e=>{if(e.key=="Escape"&&openId)closeD()});
  async function openD(id){const r=DB.find(x=>x.id==id);if(!r)return;openId=id;const st=r.st,q=r.qs||{};
   const btns=Object.entries(st.sel||{}).map(([k,v])=>{let h="";try{h=P[k][1](v)}catch(e){}return P[k]?`<a class="lk" href="${esc(h)}" target="_blank" rel="noopener"><span class="g"><svg viewBox="0 0 24 24">${I[k]}</svg></span><span><b>${P[k][0]}</b><em>${esc(v)}</em></span></a>`:""}).join("")||'<div class="note">No buttons on this page.</div>';
@@ -1814,7 +1913,7 @@ if(location.hash.startsWith("#p=")){
   <div class="sec">Notes (only visible to you)</div><textarea id="dnote" placeholder="e.g. Table cards, Main street shop…">${esc(r.note||"")}</textarea>
   <div class="sec">Page link</div><textarea class="mono" readonly>${esc(r.url)}</textarea><div class="acts"><button class="pill" data-a="cp">Copy link</button></div>`;
   $("bk").classList.add("on");$("dr").classList.add("on");$("dr").scrollTop=0;
-  try{const c=await makeQR(r.url,qopt(r),560);if(openId!=id)return;const box=$("dqr");box.innerHTML="";c.style.cssText="width:min(240px,100%);height:auto;border-radius:12px;display:block;padding:8px;background:"+(q.tr?"#fff":"transparent");box.appendChild(c);$("dInfo").textContent=c._i.n+"×"+c._i.n+" · v"+c._i.ver+" · EC "+c._i.lvl;r._c=c}catch(e){}}
+  try{const c=await makeQR(r.url,qopt(r),560);if(openId!=id)return;const box=$("dqr");box.innerHTML="";c.style.cssText="width:min(240px,100%);height:auto;border-radius:12px;display:block;padding:8px;background:"+(q.tr?"#fff":"transparent");box.appendChild(c);$("dInfo").textContent=c._i.n+"×"+c._i.n+" · v"+c._i.ver+" · EC "+c._i.lvl}catch(e){}}
  $("dr").oninput=e=>{if(e.target.id=="dnote"){const r=DB.find(x=>x.id==openId);if(r){r.note=e.target.value;persist()}}};
  $("dr").onclick=async e=>{const b=e.target.closest("[data-a]");if(!b)return;const r=DB.find(x=>x.id==openId);if(!r)return;const a=b.dataset.a;
   if(a=="close")closeD();
@@ -1903,9 +2002,18 @@ if(location.hash.startsWith("#p=")){
  $("opn").onclick=()=>{if(curUrl)window.open(curUrl,"_blank","noopener")};
 
  /* ---------- start ---------- */
- $("host").value=lsGet(LH,"")||(location.protocol.startsWith("http")?location.origin+location.pathname:"");
- $("cnt").textContent=DB.length||"";
- draw(true);go("ov");
+ function start(){Object.assign(S,S0());Object.assign(Q,Q0());editId=null;curUrl=null;
+  $("host").value=lsGet(LH,"")||(location.protocol.startsWith("http")?location.origin+location.pathname:"");
+  $("cnt").textContent=DB.length||"";syncInputs();resetOut();draw(true);go("ov")}
+ (async()=>{
+  setSync("Local only");
+  if(cfg&&cfg.apiKey&&cfg.projectId){
+   if(await loadFB()){try{firebase.initializeApp(cfg);auth=firebase.auth();fs=firebase.firestore();cloud=true}catch(e){toast("Firebase config problem: "+fbErr(e))}}
+   if(!cloud)toast("Couldn’t start Firebase — working locally.")}
+  if(!cloud){start();return}
+  setSync("Sign in");
+  try{const u=await new Promise(res=>{const un=auth.onAuthStateChanged(x=>{un();res(x)})});if(u){user=wrap(u);await afterLogin();return}}catch(e){}
+  start();showAuth()})();
 }
 
 </script></body></html>
