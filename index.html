@@ -1424,6 +1424,11 @@ button{cursor:pointer;border:0;background:none}
 .th span{height:22px;border-radius:999px;margin-bottom:12px}
 .fch{display:flex;flex-wrap:wrap;gap:6px;max-height:150px;overflow:auto;scrollbar-width:thin}
 .pl{display:flex;flex-wrap:wrap;gap:6px}
+.live{color:#1a9d4b;font-size:12px;font-weight:600;margin-left:8px;text-transform:none;letter-spacing:0}
+.scn{display:flex;gap:10px;flex-wrap:wrap}.scn div{flex:1;min-width:90px;background:#f3f2ef;border-radius:14px;padding:10px 12px}.scn b{display:block;font-size:24px}.scn span{font-size:12px;color:var(--mut)}
+.scbars{display:flex;align-items:flex-end;gap:3px;height:60px;margin:12px 0 4px}.scbars i{flex:1;background:var(--ink);border-radius:3px 3px 0 0;min-height:2px;opacity:.85}
+.scrow{display:flex;align-items:center;gap:8px;font-size:13px;margin:4px 0}.scrow em{font-style:normal;flex:0 0 110px;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.scrow s{flex:1;height:8px;background:#ece9e4;border-radius:4px;overflow:hidden;text-decoration:none}.scrow s i{display:block;height:100%;background:var(--ink)}.scrow b{flex:0 0 30px;text-align:right}
+.scl{font-size:13px;border-top:1px solid #0001;padding:7px 0;display:flex;justify-content:space-between;gap:8px}
 .qcs{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 10px}
 .qcs i{width:34px;height:34px;border-radius:50%;cursor:pointer;border:3px solid #fff;box-shadow:0 0 0 1px #0003}.qcs i.on{box-shadow:0 0 0 3px #15181a}
 .qcs input[type=color]{width:38px;height:38px;border:0;padding:0;background:none;cursor:pointer}
@@ -1542,6 +1547,7 @@ button{cursor:pointer;border:0;background:none}
   <button data-v="ov"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>Overview</button>
   <button data-v="ed"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>Editor</button>
   <button data-v="qs"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="6" height="6" rx="1.5"/><rect x="14.5" y="3.5" width="6" height="6" rx="1.5"/><rect x="3.5" y="14.5" width="6" height="6" rx="1.5"/><path d="M14.5 14.5h2v2M20.5 14.5v0M14.5 20.5h2M20.5 17.5v3h-3"/></svg>My QRs<span class="cnt" id="cnt"></span></button>
+  <button data-v="lk"><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>Link QR</button>
  </nav>
  <button class="cta light" id="cfgBtn" title="Cloud database">☁</button>
  <button class="cta" id="newBtn">+ New</button>
@@ -1583,7 +1589,7 @@ button{cursor:pointer;border:0;background:none}
    <div class="tile pub w"><div class="tl"><span>Publish</span></div><div class="tv">Generate &amp; save</div>
     <div class="fld">Where is this file hosted?</div>
     <input class="in" id="host" placeholder="https://yourdomain.com/page.html">
-    <div class="note">Host this file once. All page details live inside each QR link, so nothing expires and no database is needed.</div>
+    <div class="note">Host this file once. When you are signed in, each page gets a permanent QR: you can edit the page later and the QR never changes. Not signed in: the page details live inside the link instead.</div>
     <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap"><button class="cta" id="gen" style="flex:1">Generate &amp; save</button></div>
     <div class="dirty hide" id="dirty">You changed something. Tap “Generate &amp; save” to update the QR.</div>
     <div class="hide" id="out">
@@ -1605,15 +1611,30 @@ button{cursor:pointer;border:0;background:none}
  </div>
  <div class="cards" id="cards"></div>
 </section>
+
+<section id="v-lk" class="view hide">
+ <div class="panel" style="max-width:560px;margin:0 auto">
+  <div class="hd"><div><div class="eyebrow">Quick tool · separate from your pages</div><h1 class="big">Link<br>to QR</h1></div></div>
+  <div class="note" style="margin:6px 0 14px">Paste any link (a website, Google Maps, a video, a PDF…) and get a QR code for it. Nothing here is saved or counted.</div>
+  <input class="in" id="lkIn" placeholder="Paste a link, e.g. https://example.com" inputmode="url" autocapitalize="off" autocorrect="off">
+  <div class="fld" style="margin-top:14px">Style</div>
+  <div class="seg" id="lkQs"><button class="pill" data-q="s">Square</button><button class="pill" data-q="r">Rounded</button><button class="pill" data-q="d">Dots</button><button class="pill" data-q="m">Diamond</button></div>
+  <div class="qcs" id="lkQc"><input type="color" id="lkCc" value="#111111" title="Custom colour"></div>
+  <label class="chk"><input type="checkbox" id="lkTr"> Transparent background</label>
+  <div style="margin-top:14px"><button class="cta" id="lkGo" style="width:100%">Make QR</button></div>
+  <div class="hide" id="lkOut" style="margin-top:18px;text-align:center"><div id="lkQr" style="display:flex;justify-content:center"></div>
+   <div class="seg" style="justify-content:center;margin-top:12px"><button class="pill dk" id="lkDl">Download PNG</button><button class="pill" id="lkCp">Copy link</button></div>
+   <div class="note" style="margin-top:8px">Scan-test with your phone before printing.</div></div>
+ </div>
+</section>
 </main>
 <a class="made" href="https://clayncode.netlify.app" target="_blank" rel="noopener"><span>made by</span><img id="madeImg" alt="clay&amp;code"></a>
 </div>
-<div class="auth hide" id="auth"><div class="panel authc"><div class="orb" style="margin-bottom:14px"></div><div class="eyebrow">QR Pages · by clayncode</div><h1 class="big" style="font-size:40px">Sign in</h1>
- <p class="note" style="margin:8px 0 16px">Your QR projects are stored in your private cloud database.</p>
- <input class="in" id="aEm" type="email" placeholder="Email" autocomplete="email" style="margin-bottom:8px"><input class="in" id="aPw" type="password" placeholder="Password (6+ characters)" autocomplete="current-password">
+<div class="auth hide" id="auth"><div class="panel authc"><div class="orb" style="margin-bottom:14px"></div><div class="eyebrow">QR Pages · by clayncode</div><h1 class="big" style="font-size:40px">Enter PIN</h1>
+ <p class="note" style="margin:8px 0 16px">Private area. Only the owner can open this.</p>
+ <input class="in" id="aPw" type="password" placeholder="PIN" autocomplete="current-password" autocapitalize="off" autocorrect="off">
  <div id="aMsg" class="note" style="min-height:18px;margin:8px 0"></div>
- <div class="seg" style="margin:0"><button class="cta" id="aIn" style="flex:1">Sign in</button><button class="pill" id="aUp" style="flex:1;justify-content:center">Create account</button></div>
- <button class="note" id="aCfg" style="text-decoration:underline;margin-top:14px">Cloud settings</button></div></div>
+ <button class="cta" id="aIn" style="width:100%">Unlock</button></div></div>
 <div class="bk" id="bk"></div>
 <aside class="dr" id="dr" aria-live="polite"></aside>
 <div class="dlg" id="dlgBox"></div>
@@ -1687,9 +1708,25 @@ function render(el,d,full,logoSrc){
  if(lw){const sh=lw.dataset.s,fl=lw.dataset.f;
   const put=(u,last)=>{const im=new Image();im.alt="";im.onload=()=>{lw.className="lgw "+sh;lw.textContent="";lw.appendChild(im)};im.onerror=()=>{if(!last&&fl){try{put(new URL(fl,location.href.split("#")[0]).href,1)}catch(e){}}};im.src=u};
   fetch("https://firestore.googleapis.com/v1/projects/qr-pages-b511c/databases/(default)/documents/logos/"+encodeURIComponent(lw.dataset.li)+"?key=AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs").then(r=>r.ok?r.json():Promise.reject()).then(j=>{const u=j&&j.fields&&j.fields.d&&j.fields.d.stringValue;if(!/^data:image\//.test(u||""))throw 0;put(u,0)}).catch(()=>{if(fl){try{put(new URL(fl,location.href.split("#")[0]).href,1)}catch(e){}}})}}
-if(location.hash.startsWith("#p=")){
+if(location.hash.startsWith("#p=")||location.hash.startsWith("#v=")){
  const v=document.getElementById("viewer");v.classList.remove("hide");
- dec(location.hash.slice(3)).then(d=>{document.title=d.n||"Contact";loadFont(d.f);render(v,d,true)}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page link looks incomplete.</p>");
+ const H=location.hash;
+ if(H.startsWith("#v=")){
+  const FB="https://firestore.googleapis.com/v1/projects/qr-pages-b511c/databases/(default)/documents",KEY="AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs";
+  const pid=H.slice(3).split("&")[0].replace(/[^A-Za-z0-9_-]/g,"").slice(0,40),quiet=/[&]nt=1/.test(H);
+  const parseUA=ua=>{let dev="Desktop",os="Other",br="Other",md="",m;
+   if(/iPad/.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1)){dev="Tablet";os="iPadOS"}
+   else if(/iPhone|iPod/.test(ua)){dev="Phone";os="iOS";md="iPhone"}
+   else if(/Android/.test(ua)){dev=/Mobile/.test(ua)?"Phone":"Tablet";os="Android"}
+   else if(/Windows/.test(ua))os="Windows";else if(/CrOS/.test(ua))os="ChromeOS";else if(/Mac OS X/.test(ua))os="macOS";else if(/Linux/.test(ua))os="Linux";
+   if(m=ua.match(/(?:iPhone OS|CPU OS) (\d+)/))os+=" "+m[1];else if(m=ua.match(/Android (\d+)/)){os+=" "+m[1];const q=ua.match(/Android[^;)]*; ([^;)]+)/);if(q)md=q[1].replace(/ Build.*/,"").trim().slice(0,40)}
+   if(/Instagram/.test(ua))br="Instagram app";else if(/FBAN|FBAV/.test(ua))br="Facebook app";else if(/Edg\//.test(ua))br="Edge";else if(/OPR\/|Opera/.test(ua))br="Opera";else if(/SamsungBrowser/.test(ua))br="Samsung Internet";else if(/FxiOS|Firefox/.test(ua))br="Firefox";else if(/CriOS|Chrome/.test(ua))br="Chrome";else if(/Safari/.test(ua))br="Safari";
+   return{dev,os,br,md}};
+  const logScan=()=>{try{if(quiet)return;const k="ccs_"+pid,last=+sessionStorage.getItem(k)||0;if(Date.now()-last<1800000)return;sessionStorage.setItem(k,String(Date.now()));
+   const i=parseUA(navigator.userAgent||""),f=x=>({stringValue:String(x||"")});
+   fetch(FB+"/pages/"+pid+"/scans?key="+KEY,{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({fields:{t:{integerValue:String(Date.now())},dev:f(i.dev),md:f(i.md),os:f(i.os),br:f(i.br),tz:f(Intl.DateTimeFormat().resolvedOptions().timeZone),lang:f((navigator.language||"").slice(0,12)),scr:f(screen.width+"x"+screen.height)}})}).catch(()=>{})}catch(e){}};
+  fetch(FB+"/pages/"+pid+"?key="+KEY).then(r=>r.ok?r.json():Promise.reject()).then(j=>{const d=JSON.parse(j.fields.d.stringValue);document.title=d.n||"Contact";loadFont(d.f);render(v,d,true);logScan()}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page is no longer available.</p>");
+ }else dec(H.slice(3)).then(d=>{document.title=d.n||"Contact";loadFont(d.f);render(v,d,true)}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page link looks incomplete.</p>");
 }else{
  const $=id=>document.getElementById(id);
  $("builder").classList.remove("hide");
@@ -1721,15 +1758,30 @@ if(location.hash.startsWith("#p=")){
  /* ---------- cloud database (Firebase) ---------- */
  const cfg={apiKey:"AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs",authDomain:"qr-pages-b511c.firebaseapp.com",projectId:"qr-pages-b511c",storageBucket:"qr-pages-b511c.firebasestorage.app",messagingSenderId:"491077035821",appId:"1:491077035821:web:15c9a84bcd1bc1f85e15a4",measurementId:"G-9XVPC004S6"};
  let auth=null,fs=null,user=null,ready=false,cloud=false,SNAP=new Map(),syncT;
+ const OWNER_EMAIL="clayncodebranding@gmail.com";
  const RULES=`rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function owner() {
+      return request.auth != null && request.auth.token.email == '${OWNER_EMAIL}';
+    }
     match /users/{uid}/projects/{id} {
-      allow read, write: if request.auth != null && request.auth.uid == uid;
+      allow read, write: if owner();
+    }
+    match /{path=**}/projects/{id} {
+      allow read: if owner();
     }
     match /logos/{id} {
       allow get: if true;
-      allow create, update: if request.auth != null;
+      allow create, update: if owner();
+    }
+    match /pages/{id} {
+      allow get: if true;
+      allow create, update, delete: if owner();
+      match /scans/{sid} {
+        allow create: if request.resource.data.keys().hasOnly(['t','dev','md','os','br','tz','lang','scr']);
+        allow read: if owner();
+      }
     }
   }
 }`;
@@ -1756,12 +1808,19 @@ service cloud.firestore {
   const up=DB.filter(r=>SNAP.get(r.id)!==cur.get(r.id)),del=[...SNAP.keys()].filter(id=>!cur.has(id));
   try{
    await runBatch(up,(b,r)=>b.set(colRef().doc(r.id),{name:r.name||"",upd:r.upd||Date.now(),json:cur.get(r.id)}));
-   await runBatch(del,(b,id)=>b.delete(colRef().doc(id)));
+   await runBatch(del,(b,id)=>{b.delete(colRef().doc(id));try{const o=JSON.parse(SNAP.get(id));if(o&&o.pid)b.delete(fs.collection("pages").doc(o.pid))}catch(e){}});
    SNAP=cur;setSync("Saved")
   }catch(e){setSync("Sync failed");toast("Cloud sync failed: "+fbErr(e)+" Saved locally, will retry on next change.")}}
  async function loadCloud(){setSync("Loading…");ready=false;
   try{const snap=await colRef().get();
-   DB=snap.docs.map(d=>{try{return JSON.parse(d.data().json)}catch(x){return null}}).filter(Boolean)}
+   DB=snap.docs.map(d=>{try{return JSON.parse(d.data().json)}catch(x){return null}}).filter(Boolean);
+   if(!DB.length&&!lsGet("cc_mig_"+user.id,0)){
+    try{const old=await fs.collectionGroup("projects").get();
+     const docs=old.docs.filter(d=>d.ref.parent.parent&&d.ref.parent.parent.id!==user.id);
+     if(docs.length){const b=fs.batch();docs.forEach(d=>b.set(colRef().doc(d.id),d.data()));await b.commit();
+      DB=docs.map(d=>{try{return JSON.parse(d.data().json)}catch(x){return null}}).filter(Boolean);toast("Imported "+DB.length+" project"+(DB.length==1?"":"s")+" from your old account")}
+     lsSet("cc_mig_"+user.id,1)}
+    catch(e){toast("Old projects not imported: "+fbErr(e)+" Publish the new rules from the ☁ dialog, then press Reload from cloud.")}}}
   catch(e){DB=lsGet(cacheKey(),[]);setSync("Offline");toast("Couldn’t load cloud projects: "+fbErr(e));return false}
   SNAP=new Map(DB.map(r=>[r.id,sj(r)]));ready=true;setSync("Saved");lsSet(cacheKey(),DB);
   if(!DB.length){const loc=lsGet(LS,[]);if(Array.isArray(loc)&&loc.length&&await ask("Upload your local projects?","You have "+loc.length+" QR project"+(loc.length>1?"s":"")+" saved in this browser. Copy them to your cloud database?","Upload")){DB=loc;persist()}}
@@ -1772,20 +1831,24 @@ service cloud.firestore {
  const aMsg=(t,ok)=>{const e=$("aMsg");e.textContent=t;e.style.color=ok?"#2d7a3a":"#b83a1c"};
  const showAuth=()=>{$("auth").classList.remove("hide");aMsg("")};
  async function afterLogin(){$("auth").classList.add("hide");$("aPw").value="";await loadCloud();start()}
- $("aIn").onclick=async()=>{const email=$("aEm").value.trim(),password=$("aPw").value;if(!email||!password){aMsg("Enter your email and password");return}
-  aMsg("Signing in…",1);try{const c=await auth.signInWithEmailAndPassword(email,password);user=wrap(c.user)}catch(e){aMsg(fbErr(e));return}await afterLogin()};
- $("aUp").onclick=async()=>{const email=$("aEm").value.trim(),password=$("aPw").value;if(!email||password.length<6){aMsg("Enter an email and a password of 6+ characters");return}
-  aMsg("Creating account…",1);try{const c=await auth.createUserWithEmailAndPassword(email,password);user=wrap(c.user)}catch(e){aMsg(fbErr(e));return}await afterLogin()};
- $("aPw").onkeydown=e=>{if(e.key=="Enter")$("aIn").click()};
- $("aCfg").onclick=()=>openCfg();
+ let pinBusy=false;
+ $("aIn").onclick=async()=>{const pin=$("aPw").value;if(pinBusy)return;if(!pin){aMsg("Enter the PIN");return}
+  if(!cloud){aMsg("Can’t reach the server. Check your internet and reload.");return}
+  pinBusy=true;aMsg("Checking…",1);
+  try{const c=await auth.signInWithEmailAndPassword(OWNER_EMAIL,pin);user=wrap(c.user)}
+  catch(e){const c=(e&&e.code)||"";aMsg(c.includes("invalid-credential")||c.includes("wrong-password")||c.includes("user-not-found")||c.includes("invalid-email")?"Wrong PIN.":fbErr(e));$("aPw").value="";setTimeout(()=>{pinBusy=false},1500);return}
+  pinBusy=false;await afterLogin()};
  $("cfgBtn").onclick=()=>openCfg();
  function closeCfg(){$("cfgBox").classList.remove("on");if(!openId&&!$("dlgBox").classList.contains("on"))$("bk").classList.remove("on")}
  function openCfg(){const b=$("cfgBox");
-  b.innerHTML=`<h3>Cloud database · Firebase</h3><p>${cloud&&user?`Connected · signed in as <b>${esc(user.email||"")}</b>`:cloud?"Connected to Firebase. Sign in to continue.":"Couldn’t reach Firebase — projects are stored only in this browser."}</p>
-  <div class="seg" style="margin-top:8px">${cloud&&user?'<button class="pill" data-c="reload">Reload from cloud</button><button class="pill" data-c="out">Sign out</button>':""}<button class="pill" data-c="x">Close</button></div>`;
+  b.innerHTML=`<h3>Cloud database · Firebase</h3><p>${cloud&&user?`Connected · unlocked`:cloud?"Connected to Firebase. Enter the PIN to continue.":"Couldn’t reach Firebase."}</p>
+  <div class="fld" style="margin-top:12px">Firestore rules (Firebase → Firestore Database → Rules → paste → Publish)</div>
+  <textarea class="mono" readonly style="min-height:210px">${esc(RULES)}</textarea>
+  <div class="seg" style="margin-top:8px"><button class="pill" data-c="rules">Copy rules</button>${cloud&&user?'<button class="pill" data-c="reload">Reload from cloud</button><button class="pill" data-c="out">Lock</button>':""}<button class="pill" data-c="x">Close</button></div>`;
   $("bk").classList.add("on");b.classList.add("on")}
  $("cfgBox").onclick=async e=>{const b=e.target.closest("[data-c]");if(!b)return;const a=b.dataset.c;
   if(a=="x")closeCfg();
+  if(a=="rules")toast(await copy(RULES)?"Rules copied":"Couldn’t copy — select the text and copy it");
   if(a=="reload"){closeCfg();if(await loadCloud()){toast("Reloaded from cloud");go(view)}}
   if(a=="out"){closeCfg();await auth.signOut();user=null;ready=false;DB=[];SNAP=new Map();closeD();showAuth()}};
 
@@ -1826,7 +1889,7 @@ service cloud.firestore {
  const imgTag=r=>{const u=cached(r);return `<img data-th="${r.id}" alt="" ${u?`src="${u}"`:""}>`};
 
  /* ---------- navigation ---------- */
- function go(v){view=v;["ov","ed","qs"].forEach(k=>$("v-"+k).classList.toggle("hide",k!=v));
+ function go(v){view=v;["ov","ed","qs","lk"].forEach(k=>$("v-"+k).classList.toggle("hide",k!=v));
   [...$("nav").children].forEach(b=>b.classList.toggle("on",b.dataset.v==v));
   if(v=="ov")drawOv();if(v=="qs")drawQs();if(v=="ed")draw(true);bulkUpd();window.scrollTo(0,0)}
  $("nav").onclick=e=>{const b=e.target.closest("button");if(b)go(b.dataset.v)};
@@ -1896,7 +1959,23 @@ service cloud.firestore {
  $("imp").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const a=JSON.parse(rd.result);if(!Array.isArray(a))throw 0;let c=0;a.forEach(r=>{if(r&&r.id&&r.url&&r.st&&!DB.some(x=>x.id==r.id)){r.cr=r.cr||Date.now();r.upd=r.upd||r.cr;r.name=r.name||"Untitled";DB.push(r);c++}});persist();drawQs();toast(c?"Imported "+c+" QR page"+(c>1?"s":""):"Nothing new to import")}catch(x){toast("That file isn’t a valid backup")}};rd.readAsText(f);e.target.value=""};
 
  /* ---------- detail drawer ---------- */
- const closeD=()=>{openId=null;$("dr").classList.remove("on");$("bk").classList.remove("on")};
+ let scUnsub=null;
+ const stopScans=()=>{if(scUnsub){try{scUnsub()}catch(e){}scUnsub=null}};
+ function watchScans(pid){stopScans();
+  try{scUnsub=fs.collection("pages").doc(pid).collection("scans").orderBy("t","desc").limit(2000).onSnapshot(sn=>drawScans(sn.docs.map(d=>d.data())),e=>{const b=$("scBox");if(b)b.innerHTML='<div class="note">Couldn’t read scans: '+esc(fbErr(e))+'</div>'})}catch(e){}}
+ function tally(L,k){const m={};L.forEach(x=>{const v=x[k]||"Unknown";m[v]=(m[v]||0)+1});return Object.entries(m).sort((a,b)=>b[1]-a[1]).slice(0,5)}
+ function drawScans(L){const b=$("scBox");if(!b)return;const now=Date.now(),D=864e5;
+  const n24=L.filter(x=>now-x.t<D).length,n7=L.filter(x=>now-x.t<7*D).length;
+  const days=[];for(let i=13;i>=0;i--){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()-i);days.push([d.getTime(),0])}
+  L.forEach(x=>{for(let i=days.length-1;i>=0;i--){if(x.t>=days[i][0]){days[i][1]++;break}}});
+  const mx=Math.max(1,...days.map(x=>x[1]));
+  const rows=(t,k)=>{const T=tally(L,k),m=T.length?T[0][1]:1;return `<div class="sec" style="margin-top:12px">${t}</div>`+(T.map(([a,c])=>`<div class="scrow"><em>${esc(a)}</em><s><i style="width:${Math.round(c/m*100)}%"></i></s><b>${c}</b></div>`).join("")||'<div class="note">—</div>')};
+  b.innerHTML=`<div class="scn"><div><b>${L.length>=2000?"2000+":L.length}</b><span>Total scans</span></div><div><b>${n24}</b><span>Last 24 h</span></div><div><b>${n7}</b><span>Last 7 days</span></div></div>
+  <div class="scbars" title="Last 14 days">${days.map(([t,c])=>`<i style="height:${Math.round(c/mx*100)}%" title="${new Date(t).toLocaleDateString()}: ${c}"></i>`).join("")}</div>
+  ${rows("Device","dev")}${rows("System","os")}${rows("Browser","br")}${rows("Time zone","tz")}
+  <div class="sec" style="margin-top:12px">Recent</div>${L.slice(0,12).map(x=>`<div class="scl"><span>${esc(x.dev||"")}${x.md?" · "+esc(x.md):""} · ${esc(x.os||"")} · ${esc(x.br||"")}</span><span>${fmtT(x.t)}</span></div>`).join("")||'<div class="note">No scans yet. Scan the QR with a phone to test.</div>'}
+  <div class="note" style="margin-top:8px">Counts every open of the page link (a scan or a tapped link). One count per visitor per 30 minutes. Your own “Open page” button isn’t counted.</div>`}
+ const closeD=()=>{stopScans();openId=null;$("dr").classList.remove("on");$("bk").classList.remove("on")};
  $("bk").onclick=()=>{if($("dlgBox").classList.contains("on"))return;if($("cfgBox").classList.contains("on")){closeCfg();return}closeD()};
  document.addEventListener("keydown",e=>{if(e.key=="Escape"&&openId)closeD()});
  async function openD(id){const r=DB.find(x=>x.id==id);if(!r)return;openId=id;const st=r.st,q=r.qs||{};
@@ -1908,8 +1987,9 @@ service cloud.firestore {
   <div class="kv"><div><span>Created</span><b>${fmtT(r.cr)}</b></div><div><span>Last edited</span><b>${fmtT(r.upd)}</b></div><div><span>Theme</span><b>${TH[st.t||0][0]}</b></div><div><span>Font</span><b>${esc(st.f||"Theme default")}</b></div><div><span>Logo</span><b>${st.logo?"Uploaded":st.l?"Linked":"None"}</b></div><div><span>QR style</span><b>${SN[q.s||"r"]}${q.ll&&st.logo?" · logo inside":""}${q.tr?" · transparent":""}</b></div><div><span>QR size</span><b id="dInfo">…</b></div><div><span>Link length</span><b>${r.url.length} characters</b></div><div><span>Hosted at</span><b>${esc(r.host||"—")}</b></div></div>
   <div class="sec">Buttons (${Object.keys(st.sel||{}).length})</div>${btns}
   <div class="sec">Notes (only visible to you)</div><textarea id="dnote" placeholder="e.g. Table cards, Main street shop…">${esc(r.note||"")}</textarea>
+  ${r.pid?'<div class="sec">Scans <span class="live">● Live</span></div><div id="scBox"><div class="note">Loading…</div></div>':'<div class="sec">Scans</div><div class="note">This is a static QR, so scans can’t be counted. Open it in the editor and press Generate &amp; save to make it permanent (the QR changes one last time).</div>'}
   <div class="sec">Page link</div><textarea class="mono" readonly>${esc(r.url)}</textarea><div class="acts"><button class="pill" data-a="cp">Copy link</button></div>`;
-  $("bk").classList.add("on");$("dr").classList.add("on");$("dr").scrollTop=0;
+  $("bk").classList.add("on");$("dr").classList.add("on");$("dr").scrollTop=0;if(r.pid&&cloud&&user&&fs)watchScans(r.pid);
   try{const c=await makeQR(r.url,qopt(r),560);if(openId!=id)return;const box=$("dqr");box.innerHTML="";c.style.cssText="width:min(240px,100%);height:auto;border-radius:12px;display:block;padding:8px;background:"+(q.tr?"#fff":"transparent");box.appendChild(c);$("dInfo").textContent=c._i.n+"×"+c._i.n+" · v"+c._i.ver+" · EC "+c._i.lvl}catch(e){}}
  $("dr").oninput=e=>{if(e.target.id=="dnote"){const r=DB.find(x=>x.id==openId);if(r){r.note=e.target.value;persist()}}};
  $("dr").onclick=async e=>{const b=e.target.closest("[data-a]");if(!b)return;const r=DB.find(x=>x.id==openId);if(!r)return;const a=b.dataset.a;
@@ -1917,7 +1997,7 @@ service cloud.firestore {
   if(a=="dl"){const c=await makeQR(r.url,qopt(r));dl(r.name.replace(/\W+/g,"-")+"-qr.png",c.toDataURL("image/png"))}
   if(a=="edit"){closeD();loadRec(r,false)}
   if(a=="dup"){closeD();loadRec(r,true);toast("Duplicated — change anything and generate")}
-  if(a=="open")window.open(r.url,"_blank","noopener");
+  if(a=="open")window.open(r.url+(r.url.includes("#v=")?"&nt=1":""),"_blank","noopener");
   if(a=="fav"){r.fav=!r.fav;persist();b.textContent=r.fav?"★ Favorite":"☆ Favorite";if(view=="qs")drawQs()}
   if(a=="cp")toast(await copy(r.url)?"Link copied":"Couldn’t copy — select the link and copy it");
   if(a=="del"){if(await ask("Delete “"+r.name+"”?","This removes it from this browser. QR codes you already printed keep working.","Delete",true)){DB=DB.filter(x=>x.id!=r.id);persist();closeD();if(view=="qs")drawQs();if(view=="ov")drawOv();toast("Deleted")}}};
@@ -2003,16 +2083,37 @@ service cloud.firestore {
   if(!/^https?:\/\//i.test(host))host="https://"+host;$("host").value=host;lsSet(LH,host);
   tiny="";
   if(S.logo)await pushLogo();
-  curUrl=host.split("#")[0]+"#p="+await enc(data());
+  const rr=editId&&DB.find(x=>x.id==editId);let pid=rr&&rr.pid||"",dyn=false;
+  if(!pid&&cloud&&user&&fs){
+   if(!rr||await ask("Make this QR permanent?","This QR holds the whole page inside its link, so every edit changes the QR. A permanent QR changes one last time; after that, edits update the web page only and the QR stays the same. It also lets you see live scans.","Make permanent")){const a=new Uint8Array(8);crypto.getRandomValues(a);pid=[...a].map(x=>(x%36).toString(36)).join("")}}
+  if(pid){
+   try{await fs.collection("pages").doc(pid).set({uid:user.id,n:S.n.trim(),upd:Date.now(),d:JSON.stringify(data())});dyn=true}
+   catch(e){toast("Couldn’t publish the page: "+fbErr(e));if(rr&&rr.pid)return;pid=""}}
+  if(dyn){if(rr&&rr.pid){host=rr.host||host;curUrl=rr.url}else curUrl=host.split("#")[0]+"#v="+pid;$("host").value=host}
+  else curUrl=host.split("#")[0]+"#p="+await enc(data());
   if(!await showQR())return;
   const now=Date.now();let r=editId&&DB.find(x=>x.id==editId);
-  const body={name:S.n.trim(),host,url:curUrl,upd:now,st:{t:S.t,s:S.s,f:S.f,n:S.n.trim(),d:S.d.trim(),l:S.l,wt:S.wt,sel:Object.fromEntries(Object.entries(S.sel).filter(x=>x[1])),logo:S.logo,logoUrl:S.logoUrl,logoFor:S.logoFor},qs:{s:Q.s,c:Q.c,custom:Q.custom,tr:Q.tr,ll:Q.ll&&!!S.logo}};
-  if(r){Object.assign(r,body);toast("Updated in My QRs")}else{r={id:uid(),cr:now,fav:false,note:"",...body};DB.unshift(r);editId=r.id;toast("Saved to My QRs")}
+  const body={name:S.n.trim(),host,pid:dyn?pid:"",url:curUrl,upd:now,st:{t:S.t,s:S.s,f:S.f,n:S.n.trim(),d:S.d.trim(),l:S.l,wt:S.wt,sel:Object.fromEntries(Object.entries(S.sel).filter(x=>x[1])),logo:S.logo,logoUrl:S.logoUrl,logoFor:S.logoFor},qs:{s:Q.s,c:Q.c,custom:Q.custom,tr:Q.tr,ll:Q.ll&&!!S.logo}};
+  if(r){Object.assign(r,body);toast(dyn&&rr&&rr.pid?"Page updated — the QR stays the same":"Updated in My QRs")}else{r={id:uid(),cr:now,fav:false,note:"",...body};DB.unshift(r);editId=r.id;toast("Saved to My QRs")}
   persist();$("dirty").classList.add("hide");logoNote();setMode();draw()};
  $("dl").onclick=()=>{if(canvas)dl(($("n").value||"qr").replace(/\W+/g,"-")+"-qr.png",canvas.toDataURL("image/png"))};
  $("dlg").onclick=()=>{if(S.logo)dl(slug(),S.logo)};
  $("cp").onclick=async()=>toast(await copy(curUrl)?"Link copied":"Couldn’t copy the link");
- $("opn").onclick=()=>{if(curUrl)window.open(curUrl,"_blank","noopener")};
+ $("opn").onclick=()=>{if(curUrl)window.open(curUrl+(curUrl.includes("#v=")?"&nt=1":""),"_blank","noopener")};
+
+ /* ---------- link to QR ---------- */
+ const LQ={s:"r",c:1,custom:null,tr:false};let lkCanvas=null,lkUrl="";
+ QC.forEach((c,i)=>{const e=document.createElement("i");e.style.background=`linear-gradient(135deg,${c[1][0]},${c[1][1]})`;e.title=c[0];e.onclick=()=>{LQ.c=i;LQ.custom=null;lkDraw()};$("lkQc").insertBefore(e,$("lkCc"))});
+ async function lkMake(){try{const c=await makeQR(lkUrl,{s:LQ.s,cols:colsOf(LQ),tr:LQ.tr,logo:null});$("lkQr").innerHTML="";c.style.cssText="width:min(300px,100%);height:auto;border-radius:12px;display:block";$("lkQr").appendChild(c);lkCanvas=c;$("lkOut").classList.remove("hide")}catch(e){toast("That link is too long for one QR.")}}
+ function lkDraw(){[...$("lkQc").querySelectorAll("i")].forEach((e,i)=>e.classList.toggle("on",!LQ.custom&&i==LQ.c));[...$("lkQs").children].forEach(b=>b.classList.toggle("on",b.dataset.q==LQ.s));if(lkUrl)lkMake()}
+ $("lkGo").onclick=()=>{let v=$("lkIn").value.trim();if(!v){toast("Paste a link first");return}if(!/^[a-z][a-z0-9+.-]*:/i.test(v)&&/^[^\s]+\.[^\s]{2,}$/.test(v))v="https://"+v;lkUrl=v;lkDraw()};
+ $("lkIn").onkeydown=e=>{if(e.key=="Enter")$("lkGo").click()};
+ $("lkQs").onclick=e=>{const b=e.target.closest("[data-q]");if(b){LQ.s=b.dataset.q;lkDraw()}};
+ $("lkCc").oninput=()=>{LQ.custom=$("lkCc").value;lkDraw()};
+ $("lkTr").onchange=()=>{LQ.tr=$("lkTr").checked;lkDraw()};
+ $("lkDl").onclick=()=>{if(lkCanvas)dl("link-qr.png",lkCanvas.toDataURL("image/png"))};
+ $("lkCp").onclick=async()=>toast(await copy(lkUrl)?"Link copied":"Couldn’t copy the link");
+ lkDraw();
 
  /* ---------- start ---------- */
  function start(){Object.assign(S,S0());Object.assign(Q,Q0());editId=null;curUrl=null;
@@ -2022,11 +2123,13 @@ service cloud.firestore {
   setSync("Local only");
   if(cfg&&cfg.apiKey&&cfg.projectId){
    if(await loadFB()){try{firebase.initializeApp(cfg);auth=firebase.auth();fs=firebase.firestore();cloud=true}catch(e){toast("Firebase config problem: "+fbErr(e))}}
-   if(!cloud)toast("Couldn’t start Firebase — working locally.")}
-  if(!cloud){start();return}
-  setSync("Sign in");
-  try{const u=await new Promise(res=>{const un=auth.onAuthStateChanged(x=>{un();res(x)})});if(u){user=wrap(u);await afterLogin();return}}catch(e){}
-  start();showAuth()})();
+   }
+  if(!cloud){showAuth();aMsg("Can’t reach the server. Check your internet and reload.");return}
+  setSync("Locked");
+  try{const u=await new Promise(res=>{const un=auth.onAuthStateChanged(x=>{un();res(x)})});
+   if(u&&(u.email||"").toLowerCase()==OWNER_EMAIL){user=wrap(u);await afterLogin();return}
+   if(u)await auth.signOut()}catch(e){}
+  showAuth()})();
 }
 
 </script></body></html>
