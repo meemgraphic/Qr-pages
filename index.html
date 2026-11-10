@@ -2,6 +2,8 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>clay&code · QR Pages</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOSIgZmlsbD0iIzBhMGEwYSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUgNSkgc2NhbGUoLjkxNykiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0ibTIxLjY0IDMuNjQtMS4yOC0xLjI4YTEuMjEgMS4yMSAwIDAgMC0xLjcyIDBMMi4zNiAxOC42NGExLjIxIDEuMjEgMCAwIDAgMCAxLjcybDEuMjggMS4yOGExLjIgMS4yIDAgMCAwIDEuNzIgMEwyMS42NCA1LjM2YTEuMiAxLjIgMCAwIDAgMC0xLjcyIi8+PHBhdGggZD0ibTE0IDcgMyAzIi8+PHBhdGggZD0iTTUgNnY0Ii8+PHBhdGggZD0iTTE5IDE0djQiLz48cGF0aCBkPSJNMTAgMnYyIi8+PHBhdGggZD0iTTcgOEgzIi8+PHBhdGggZD0iTTIxIDE2aC00Ii8+PHBhdGggZD0iTTExIDNIOSIvPjwvZz48L3N2Zz4=">
+<meta name="theme-color" content="#ffffff">
 <script>
 (function(){const D={"QRMode":function(module,exports,require){
 module.exports = {
@@ -1259,7 +1261,7 @@ module.exports = QRCode;
 
 }};const C={};function req(p){p=p.replace("./","");if(!C[p]){const m={exports:{}};D[p](m,m.exports,req);C[p]=m.exports}return C[p]}window.QRModel=req("index");window.QRLvl=req("QRErrorCorrectLevel")})();
 </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&family=DM+Serif+Display&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Inter+Tight:wght@400;500;600;700&family=DM+Serif+Display&display=swap">
 <style>
 *{box-sizing:border-box;margin:0}
 /* page */
@@ -1524,8 +1526,24 @@ button{cursor:pointer;border:0;background:none}
 @media(min-width:768px){.pg.full{padding-top:64px}}
 
 .dq #dqr{width:100%;display:flex;justify-content:center}.dq canvas,.dq img{margin:0 auto}
-.auth{position:fixed;inset:0;z-index:90;background:var(--bg);display:grid;place-items:center;padding:16px;overflow:auto}
-.authc{width:min(420px,100%)}
+.auth{position:fixed;inset:0;z-index:90;background:#fff;color:#0a0a0a;font-family:"Inter Tight","Plus Jakarta Sans",system-ui,sans-serif;overflow:auto}
+.auth.hide{display:none!important}
+.auth *{box-sizing:border-box}
+.a-wrap{position:relative;min-height:100%;padding:24px;display:flex;flex-direction:column;justify-content:space-between;gap:28px}
+.a-brand{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:600;letter-spacing:.02em;text-transform:uppercase}
+.a-brand i{width:30px;height:30px;border:1px solid #0a0a0a;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:700}
+.a-box{border:1px solid #0a0a0a;border-radius:14px;background:#fff;padding:16px;width:min(360px,100%);display:flex;flex-direction:column;gap:12px;align-self:flex-end}
+.a-box .a-lab{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between}
+.a-box input{width:100%;border:1px solid #0a0a0a;border-radius:10px;background:#fff;color:#0a0a0a;font:600 18px "Inter Tight",system-ui,sans-serif;letter-spacing:.35em;padding:14px 14px;outline:none}
+.a-box input::placeholder{letter-spacing:0;font-weight:500;color:#8a8a8a}
+.a-box input:focus{box-shadow:0 0 0 3px #0a0a0a22}
+.a-box #aMsg{min-height:16px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.02em;color:#b3261e;margin:0}
+.a-box button{background:#0a0a0a;color:#fff;border:0;border-radius:10px;padding:14px 18px;font:600 14px "Inter Tight",system-ui,sans-serif;cursor:pointer;width:100%}
+.a-box button:disabled{opacity:.5}
+.a-hero h1{font-weight:600;font-size:clamp(56px,15vw,160px);line-height:.86;letter-spacing:-.045em;text-transform:uppercase;margin:0}
+.a-hero p{font-size:12px;line-height:1.45;max-width:340px;margin:18px 0 0;color:#222}
+@media(min-width:760px){.a-wrap{padding:32px 36px}.a-top{display:flex;justify-content:space-between;align-items:flex-start}.a-box{width:340px}}
+@media(max-width:759px){.a-top{display:flex;flex-direction:column;gap:20px}.a-box{align-self:stretch;width:100%}}
 .dlg.wide{width:min(560px,94vw);max-height:88vh;overflow:auto;text-align:left}
 .dlg .in{background:#f3f2ef;border-color:transparent}.dlg .fld{color:var(--mut)}
 .dlg .seg{justify-content:flex-start}
@@ -1538,11 +1556,146 @@ button{cursor:pointer;border:0;background:none}
 
 .dlg textarea.cfgta{min-height:110px;font-size:12px;color:var(--ink)}
 
+
+/* ===== MONO THEME — black & white, outlined grid, bold uppercase type ===== */
+:root{--ink:#0a0a0a;--mut:#666;--bg:#fff;--r:14px;--ln:#0a0a0a}
+body{font-family:"Inter Tight","Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,sans-serif;background:#fff;color:var(--ink);letter-spacing:-.005em}
+.shell{max-width:1360px}
+/* header */
+.top{border-bottom:1px solid var(--ln);padding-bottom:14px;margin-bottom:16px}
+.brand{font-size:11px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;gap:10px}
+.brand small{font-size:11px;font-weight:600;color:var(--ink);letter-spacing:.03em}
+.brand small a{text-decoration:none}.brand small a:hover{text-decoration:underline}
+.orb{width:32px;height:32px;background:#fff;border:1px solid var(--ln);box-shadow:none;display:grid;place-items:center}
+.wand{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;display:block}
+.nav{background:#fff;border:1px solid var(--ln);padding:3px;border-radius:12px}
+.nav button{border-radius:9px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--ink);padding:9px 14px}
+.nav button.on{background:var(--ink);color:#fff}
+.nav svg{width:16px;height:16px}
+.cnt{background:var(--ink);color:#fff;border-radius:6px;font-weight:700}
+.nav button.on .cnt{background:#fff;color:var(--ink)}
+.cta{background:var(--ink);color:#fff;border-radius:10px;font-weight:500;font-size:14px;padding:11px 20px;border:1px solid var(--ink)}
+.cta:hover{background:#2a2a2a}
+.cta.light{background:#fff;color:var(--ink);border:1px solid var(--ln)}.cta.light:hover{background:#f2f2f2}
+#cfgBtn{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em}
+@media(max-width:760px){
+ .nav{border-radius:14px;box-shadow:0 10px 30px #0003;background:#fff}
+ .nav button{font-size:10px;padding:8px 14px}
+}
+/* panels & type */
+.panel{background:#fff;border:1px solid var(--ln);border-radius:var(--r);box-shadow:none}
+.glow{display:none}
+.eyebrow{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--ink)}
+.big{font-weight:600;text-transform:uppercase;letter-spacing:-.05em;line-height:.88;font-size:clamp(42px,7vw,92px);margin-top:10px}
+.empty .big{font-size:clamp(34px,6vw,64px)}
+.note{color:var(--mut);font-size:12px}.tile .note{color:var(--mut)}
+.fld{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;opacity:1;color:var(--ink);margin:10px 0 4px}
+/* controls */
+.in,.panel .in,.tile .in,.tile.pub .in,.dlg .in{background:#fff;border:1px solid var(--ln);border-radius:10px;padding:11px 13px;font-size:14px;margin-bottom:8px}
+.panel .in{margin:0}
+.in:focus,.panel .in:focus{background:#fff;box-shadow:0 0 0 3px #0a0a0a1f}
+.in::placeholder{color:#8a8a8a}
+select.in{appearance:none;-webkit-appearance:none;padding-right:34px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230a0a0a' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 12px center}
+.pill,.panel .pill,.acts .pill,.dlg .pill{background:#fff;border:1px solid var(--ln);border-radius:10px;padding:8px 13px;font-size:13px;font-weight:500;color:var(--ink)}
+.pill:hover,.panel .pill:hover{background:#f0f0f0}
+.pill.on,.pill.sel,.pill.dk,.panel .pill.on,.panel .pill.sel,.panel .pill.dk,.acts .pill.dk,.dlg .pill.dk{background:var(--ink);color:#fff;border-color:var(--ink)}
+.pill.dk:hover{background:#2a2a2a}
+.pill.dg,.acts .pill.dg,.dlg .pill.dg{background:#fff;color:#b3261e;border-color:#b3261e}
+.chk input{accent-color:#0a0a0a}
+.seg{gap:6px}
+.mseg{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:3px}
+.mseg button{border-radius:9px;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:var(--ink)}
+.mseg button.on{background:var(--ink);color:#fff}
+/* editor stage */
+.stg-f span{background:#fff;border:1px solid var(--ln);border-radius:8px;backdrop-filter:none;color:var(--mut);font-size:11px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.stg-f b{color:var(--ink);font-weight:700}
+.rd{font-size:11px;text-transform:uppercase;letter-spacing:.03em;font-weight:600;color:var(--mut)}
+.rd b{font-size:13px;color:var(--ink);font-weight:700}
+.rd i{background:var(--ink);box-shadow:none;border-radius:50%;width:7px;height:7px}
+.phone{border:6px solid var(--ink);border-radius:30px;box-shadow:none;max-width:290px}
+.stage{background-image:radial-gradient(#0a0a0a14 1px,transparent 1px);background-size:18px 18px}
+/* tiles = one outlined grid, hairline cells */
+.tiles{gap:1px;background:var(--ln);border:1px solid var(--ln);border-radius:var(--r);overflow:hidden}
+.tile,.tile.g1,.tile.g2,.tile.g3,.tile.g4,.tile.g5,.tile.pub{background:#fff;border:0;border-radius:0;padding:18px;color:var(--ink)}
+.tile::before{display:none}
+.tl{font-size:11px;font-weight:600;letter-spacing:.03em;opacity:1;color:var(--ink)}
+.tv{font-size:clamp(26px,3.4vw,40px);font-weight:600;text-transform:uppercase;letter-spacing:-.045em;line-height:.95;margin:22px 0 14px}
+.tv small{font-size:11px;font-weight:600;letter-spacing:.03em;opacity:1;color:var(--mut);margin-left:6px}
+.th{gap:8px}
+.th div{border-radius:10px;border:1px solid var(--ln);height:88px}
+.th div.on{box-shadow:0 0 0 2px var(--ink)}
+.th b{font-size:10px;text-transform:uppercase;letter-spacing:.03em}
+.qcs i{border:2px solid #fff;box-shadow:0 0 0 1px var(--ln)}.qcs i.on{box-shadow:0 0 0 3px var(--ink)}
+#qr{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.dirty{background:#fff;border:1px solid var(--ln);color:var(--ink);border-radius:10px;font-weight:500}
+.fch{scrollbar-color:#0a0a0a #fff}
+/* overview */
+.ov{gap:8px}
+.ov .tile,.ov .tile.g1,.ov .tile.g2,.ov .tile.g3,.ov .tile.g4,.ov .tile.g5,.ov .tile.pub{border:1px solid var(--ln);border-radius:var(--r)}
+.hd .glow{display:none}
+.pb i{background:#fff;border:1px solid var(--ln);border-radius:4px}.pb i::after{border-radius:2px}
+.pb{font-size:11px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.chart text{fill:#0a0a0a;font-weight:600;text-transform:uppercase}
+.row,.row[style]{background:#fff!important;border:1px solid var(--ln);border-radius:10px}
+.row:hover,.row[style]:hover{background:#f0f0f0!important}
+.row img{border-radius:6px;border:1px solid #0a0a0a22}
+.live{color:var(--ink)}
+.scn div{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.scn b{font-weight:600;letter-spacing:-.04em}.scn span{text-transform:uppercase;font-size:10px;font-weight:600;letter-spacing:.03em}
+.scbars i{background:var(--ink);border-radius:2px 2px 0 0}
+.scrow s{background:#fff;border:1px solid var(--ln);border-radius:4px}
+.scl{border-top:1px solid #0a0a0a33}
+/* my QRs */
+.cards{gap:8px}
+.qc{background:#fff;border:1px solid var(--ln);border-radius:var(--r);box-shadow:none;padding:10px}
+.qc:hover{transform:none;box-shadow:none;background:#f6f6f6}
+.qc.pk{outline:2px solid var(--ink);outline-offset:2px}
+.qc .im,.qc .im[style]{background:#fff!important;border:1px solid var(--ln);border-radius:10px}
+.qc .im img{border-radius:4px}
+.qn{font-weight:700;text-transform:uppercase;letter-spacing:-.01em;font-size:13px}
+.qm{font-size:10px;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+.star{background:#fff;border:1px solid var(--ln);border-radius:8px}
+.star.on svg{fill:var(--ink);stroke:var(--ink)}
+.ck{background:#fff;border:1px solid var(--ln);border-radius:6px}
+.pk .ck{background:var(--ink);color:#fff}
+/* drawer & dialogs */
+.bk{background:#0a0a0a66;backdrop-filter:none}
+.dr{background:#fff;border:1px solid var(--ln);border-radius:var(--r);top:10px;bottom:10px;right:10px}
+@media(max-width:760px){.dr{border-radius:var(--r) var(--r) 0 0;top:auto;bottom:0;right:0}}
+.dh h2{font-weight:600;text-transform:uppercase;letter-spacing:-.045em;line-height:.9;font-size:34px}
+.x{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.dq,.dq[style]{background:#fff!important;border:1px solid var(--ln);border-radius:var(--r)}
+.dq canvas,.dq img{border-radius:6px}
+.sec{font-weight:600;color:var(--ink);letter-spacing:.03em;border-top:1px solid var(--ln);padding-top:10px;margin-top:22px}
+.kv{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.kv div{border-bottom:1px solid #0a0a0a22}
+.kv span{text-transform:uppercase;font-size:11px;font-weight:600;letter-spacing:.03em}
+.lk{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.lk .g{background:#fff;border:1px solid var(--ln);border-radius:8px}
+.dr textarea{background:#fff;border:1px solid var(--ln);border-radius:10px}
+.toast{background:var(--ink);border-radius:10px;font-weight:500}
+.bulk{background:var(--ink);border-radius:12px;box-shadow:none}
+.bulk .pill{background:transparent;color:#fff;border:1px solid #ffffff55}.bulk .pill:hover{background:#ffffff22}
+.dlg{background:#fff;border:1px solid var(--ln);border-radius:var(--r)}
+.dlg h3,.dlg.wide h3{font-weight:600;text-transform:uppercase;letter-spacing:-.045em;line-height:.95;font-size:26px}
+.dlg textarea{background:#fff;border:1px solid var(--ln);border-radius:10px;color:var(--ink)}
+.steps{color:var(--ink)}
+.made{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--ink);opacity:1;margin-top:34px}
+.made img{height:13px}
+/* PIN / welcome screen */
+.a-brand i{display:grid;place-items:center}
+.a-brand i .wand{width:16px;height:16px}
+.a-sub{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.a-sub::before{content:"";width:22px;height:1px;background:#0a0a0a}
+.a-hero h1{font-size:clamp(54px,14.5vw,190px);letter-spacing:-.055em;line-height:.84}
+.a-hero h1 span{display:block}
+.a-box{border-radius:14px}
+.a-box input{border-radius:10px}.a-box button{border-radius:10px;font-weight:500}
 </style></head><body>
 <div id="viewer" class="hide"></div>
 <div id="builder" class="shell hide">
 <header class="top">
- <div class="brand"><span class="orb"></span><div>QR Pages<small>by <a href="https://clayncode.netlify.app" target="_blank" rel="noopener">clayncode</a></small></div></div>
+ <div class="brand"><span class="orb"><svg class="wand" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg></span><div>QR Pages<small>by <a href="https://clayncode.netlify.app" target="_blank" rel="noopener">clay&amp;code</a></small></div></div>
  <nav class="nav" id="nav">
   <button data-v="ov"><svg viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>Overview</button>
   <button data-v="ed"><svg viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/></svg>Editor</button>
@@ -1630,11 +1783,14 @@ button{cursor:pointer;border:0;background:none}
 </main>
 <a class="made" href="https://clayncode.netlify.app" target="_blank" rel="noopener"><span>made by</span><img id="madeImg" alt="clay&amp;code"></a>
 </div>
-<div class="auth hide" id="auth"><div class="panel authc"><div class="orb" style="margin-bottom:14px"></div><div class="eyebrow">QR Pages · by clayncode</div><h1 class="big" style="font-size:40px">Enter PIN</h1>
- <p class="note" style="margin:8px 0 16px">Private area. Only the owner can open this.</p>
- <input class="in" id="aPw" type="password" placeholder="PIN" autocomplete="current-password" autocapitalize="off" autocorrect="off">
- <div id="aMsg" class="note" style="min-height:18px;margin:8px 0"></div>
- <button class="cta" id="aIn" style="width:100%">Unlock</button></div></div>
+<div class="auth hide" id="auth"><div class="a-wrap">
+ <div class="a-top"><div class="a-brand"><i><svg class="wand" viewBox="0 0 24 24" aria-hidden="true"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg></i><span>QR Pages · by clay&amp;code</span></div>
+  <div class="a-box"><div class="a-lab"><span>Enter PIN</span><span>Owner only</span></div>
+   <input id="aPw" type="password" placeholder="PIN" autocomplete="current-password" autocapitalize="off" autocorrect="off">
+   <div id="aMsg"></div>
+   <button id="aIn">Unlock</button></div></div>
+ <div class="a-hero"><div class="a-sub">QR Pages</div><h1><span>clay&amp;</span><span>code</span></h1><p>QR Pages — private area. Only the owner can open this. Every QR you make here is permanent, tracked and saved.</p></div>
+</div></div>
 <div class="bk" id="bk"></div>
 <aside class="dr" id="dr" aria-live="polite"></aside>
 <div class="dlg" id="dlgBox"></div>
