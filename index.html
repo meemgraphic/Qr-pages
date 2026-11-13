@@ -4,6 +4,19 @@
 <title>clay&code · QR Pages</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOSIgZmlsbD0iIzBhMGEwYSIvPjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDUgNSkgc2NhbGUoLjkxNykiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxLjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+PHBhdGggZD0ibTIxLjY0IDMuNjQtMS4yOC0xLjI4YTEuMjEgMS4yMSAwIDAgMC0xLjcyIDBMMi4zNiAxOC42NGExLjIxIDEuMjEgMCAwIDAgMCAxLjcybDEuMjggMS4yOGExLjIgMS4yIDAgMCAwIDEuNzIgMEwyMS42NCA1LjM2YTEuMiAxLjIgMCAwIDAgMC0xLjcyIi8+PHBhdGggZD0ibTE0IDcgMyAzIi8+PHBhdGggZD0iTTUgNnY0Ii8+PHBhdGggZD0iTTE5IDE0djQiLz48cGF0aCBkPSJNMTAgMnYyIi8+PHBhdGggZD0iTTcgOEgzIi8+PHBhdGggZD0iTTIxIDE2aC00Ii8+PHBhdGggZD0iTTExIDNIOSIvPjwvZz48L3N2Zz4=">
 <meta name="theme-color" content="#ffffff">
+<link rel="preconnect" href="https://firestore.googleapis.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>
+/* Speed: start loading the page data the moment the HTML arrives (before the big scripts run), and load fonts without blocking the first paint. */
+(function(){var H=location.hash,V=/^#[pv]=/.test(H);window.__V=V;
+var FB="https://firestore.googleapis.com/v1/projects/qr-pages-b511c/databases/(default)/documents/",KEY="AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs";
+try{if(H.slice(0,3)=="#v="){var pid=H.slice(3).split("&")[0].replace(/[^A-Za-z0-9_-]/g,"").slice(0,40);
+window.__pg=fetch(FB+"pages/"+pid+"?key="+KEY).then(function(r){return r.ok?r.json():Promise.reject(r.status)});
+window.__pg.then(function(j){try{var d=JSON.parse(j.fields.d.stringValue);if(d.li&&!d.r){window.__lgid=d.li;window.__lg=fetch(FB+"logos/"+encodeURIComponent(d.li)+"?key="+KEY).then(function(r){return r.ok?r.json():Promise.reject()});window.__lg.catch(function(){})}}catch(e){}},function(){})}}catch(e){}
+var l=document.createElement("link");l.rel="stylesheet";l.media="print";l.onload=function(){l.media="all"};
+l.href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@"+(V?"400;600;700":"300;400;500;600;700")+"&family=Syne:wght@700;800"+(V?"":"&family=Inter+Tight:wght@400;500;600;700&family=DM+Serif+Display")+"&display=swap";
+document.head.appendChild(l)})();
+</script>
 <script>
 (function(){const D={"QRMode":function(module,exports,require){
 module.exports = {
@@ -1261,7 +1274,7 @@ module.exports = QRCode;
 
 }};const C={};function req(p){p=p.replace("./","");if(!C[p]){const m={exports:{}};D[p](m,m.exports,req);C[p]=m.exports}return C[p]}window.QRModel=req("index");window.QRLvl=req("QRErrorCorrectLevel")})();
 </script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&family=Inter+Tight:wght@400;500;600;700&family=DM+Serif+Display&display=swap">
+
 <style>
 *{box-sizing:border-box;margin:0}
 /* page */
@@ -1691,6 +1704,21 @@ select.in{appearance:none;-webkit-appearance:none;padding-right:34px;background:
 .a-hero h1 span{display:block}
 .a-box{border-radius:14px}
 .a-box input{border-radius:10px}.a-box button{border-radius:10px;font-weight:500}
+/* ===== QR health ===== */
+.hl{margin-top:8px}.hl .hd{align-items:flex-start}
+.hbig{font-weight:600;text-transform:uppercase;letter-spacing:-.05em;line-height:.9;font-size:clamp(30px,5vw,64px);margin-top:10px}
+.hbig.bad{color:#b3261e}
+.hstrip{display:flex;gap:4px;margin:16px 0 6px;flex-wrap:wrap}
+.hstrip i{width:20px;height:20px;border:1px solid var(--ln);border-radius:5px;background:#fff;display:block}
+.hstrip i.ok{background:#0a0a0a}.hstrip i.bad{background:#b3261e;border-color:#b3261e}.hstrip i.now{outline:2px solid #0a0a0a;outline-offset:2px}
+.hi{border:1px solid var(--ln);border-radius:10px;padding:10px 12px;margin-top:6px;cursor:pointer;display:grid;gap:3px}
+.hi:hover{background:#f6f6f6}.hi .hr{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.hi b{font-size:13px;text-transform:uppercase;letter-spacing:-.01em}
+.hi .hk{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.03em;color:#b3261e;white-space:nowrap}
+.hi p{font-size:12px;color:var(--mut);margin:0;word-break:break-word}.hi a{color:inherit}
+.hb{font-weight:700!important}.hb.ok{color:#0a0a0a}.hb.bad{color:#b3261e}
+.warnbar{border:1px solid #b3261e;color:#b3261e;border-radius:10px;padding:8px 12px;font-size:12px;font-weight:600;margin-top:10px}
+@media(max-width:480px){.hstrip{gap:3px}.hstrip i{width:18px;height:18px}}
 </style></head><body>
 <div id="viewer" class="hide"></div>
 <div id="builder" class="shell hide">
@@ -1863,7 +1891,9 @@ function render(el,d,full,logoSrc){
  const lw=el.querySelector(".lgw[data-li]");
  if(lw){const sh=lw.dataset.s,fl=lw.dataset.f;
   const put=(u,last)=>{const im=new Image();im.alt="";im.onload=()=>{lw.className="lgw "+sh;lw.textContent="";lw.appendChild(im)};im.onerror=()=>{if(!last&&fl){try{put(new URL(fl,location.href.split("#")[0]).href,1)}catch(e){}}};im.src=u};
-  fetch("https://firestore.googleapis.com/v1/projects/qr-pages-b511c/databases/(default)/documents/logos/"+encodeURIComponent(lw.dataset.li)+"?key=AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs").then(r=>r.ok?r.json():Promise.reject()).then(j=>{const u=j&&j.fields&&j.fields.d&&j.fields.d.stringValue;if(!/^data:image\//.test(u||""))throw 0;put(u,0)}).catch(()=>{if(fl){try{put(new URL(fl,location.href.split("#")[0]).href,1)}catch(e){}}})}}
+   const li=lw.dataset.li,lk="ccl_"+li;let lc=null;try{lc=localStorage.getItem(lk)}catch(e){}
+   if(lc&&/^data:image\//.test(lc))put(lc,0);
+   (window.__lgid===li&&window.__lg?window.__lg:fetch("https://firestore.googleapis.com/v1/projects/qr-pages-b511c/databases/(default)/documents/logos/"+encodeURIComponent(li)+"?key=AIzaSyAbWDAT0pWLZhncX_WcaWGFlD2HdN4tcXs").then(r=>r.ok?r.json():Promise.reject())).then(j=>{const u=j&&j.fields&&j.fields.d&&j.fields.d.stringValue;if(!/^data:image\//.test(u||""))throw 0;try{if(u.length<250000)localStorage.setItem(lk,u)}catch(e){}if(u!==lc)put(u,0)}).catch(()=>{if(!lc&&fl){try{put(new URL(fl,location.href.split("#")[0]).href,1)}catch(e){}}})}}
 if(location.hash.startsWith("#p=")||location.hash.startsWith("#v=")){
  const v=document.getElementById("viewer");v.classList.remove("hide");
  const H=location.hash;
@@ -1881,7 +1911,14 @@ if(location.hash.startsWith("#p=")||location.hash.startsWith("#v=")){
   const logScan=()=>{try{if(quiet)return;const k="ccs_"+pid,last=+sessionStorage.getItem(k)||0;if(Date.now()-last<1800000)return;sessionStorage.setItem(k,String(Date.now()));
    const i=parseUA(navigator.userAgent||""),f=x=>({stringValue:String(x||"")});
    return fetch(FB+"/pages/"+pid+"/scans?key="+KEY,{method:"POST",headers:{"Content-Type":"application/json"},keepalive:true,body:JSON.stringify({fields:{t:{integerValue:String(Date.now())},dev:f(i.dev),md:f(i.md),os:f(i.os),br:f(i.br),tz:f(Intl.DateTimeFormat().resolvedOptions().timeZone),lang:f((navigator.language||"").slice(0,12)),scr:f(screen.width+"x"+screen.height)}})}).catch(()=>{})}catch(e){}};
-  fetch(FB+"/pages/"+pid+"?key="+KEY).then(r=>r.ok?r.json():Promise.reject()).then(j=>{const d=JSON.parse(j.fields.d.stringValue);if(d.r&&/^(https?:|mailto:|tel:)/i.test(d.r)){v.innerHTML="<p style='padding:40px;text-align:center;font-family:sans-serif'>Opening…</p>";const lp=logScan();Promise.race([Promise.resolve(lp),new Promise(r=>setTimeout(r,1500))]).then(()=>location.replace(d.r));return}document.title=d.n||"Contact";loadFont(d.f);render(v,d,true);logScan()}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page is no longer available.</p>");
+  const bad=()=>{v.innerHTML="<p style='padding:40px;text-align:center'>This page is no longer available.</p>"},ck="ccp_"+pid;
+  const show=d=>{document.title=d.n||"Contact";loadFont(d.f);render(v,d,true)};
+  let shown=null,cd=null;try{cd=JSON.parse(localStorage.getItem(ck))}catch(e){}
+  if(cd&&cd.n!==undefined&&!cd.r){show(cd);shown=JSON.stringify(cd);logScan()}
+  (window.__pg||fetch(FB+"/pages/"+pid+"?key="+KEY).then(r=>r.ok?r.json():Promise.reject(r.status))).then(j=>{const d=JSON.parse(j.fields.d.stringValue);try{localStorage.setItem(ck,JSON.stringify(d))}catch(e){}
+   if(d.r&&/^(https?:|mailto:|tel:)/i.test(d.r)){v.innerHTML="<p style='padding:40px;text-align:center;font-family:sans-serif'>Opening…</p>";const lp=logScan();Promise.race([Promise.resolve(lp),new Promise(r=>setTimeout(r,350))]).then(()=>location.replace(d.r));return}
+   const s2=JSON.stringify(d);if(s2!==shown){show(d);if(shown===null)logScan();shown=s2}
+  }).catch(e=>{if(e===404||e===403){try{localStorage.removeItem(ck)}catch(x){}bad()}else if(shown===null)bad()});
  }else dec(H.slice(3)).then(d=>{document.title=d.n||"Contact";loadFont(d.f);render(v,d,true)}).catch(()=>v.innerHTML="<p style='padding:40px;text-align:center'>This page link looks incomplete.</p>");
 }else{
  const $=id=>document.getElementById(id);
@@ -1922,6 +1959,9 @@ service cloud.firestore {
       return request.auth != null && request.auth.token.email == '${OWNER_EMAIL}';
     }
     match /users/{uid}/projects/{id} {
+      allow read, write: if owner();
+    }
+    match /users/{uid}/health/{id} {
       allow read, write: if owner();
     }
     match /{path=**}/projects/{id} {
@@ -2005,7 +2045,7 @@ service cloud.firestore {
  $("cfgBox").onclick=async e=>{const b=e.target.closest("[data-c]");if(!b)return;const a=b.dataset.c;
   if(a=="x")closeCfg();
   if(a=="rules")toast(await copy(RULES)?"Rules copied":"Couldn’t copy — select the text and copy it");
-  if(a=="reload"){closeCfg();if(await loadCloud()){toast("Reloaded from cloud");go(view)}}
+  if(a=="reload"){closeCfg();if(await loadCloud()){await loadHealth();toast("Reloaded from cloud");go(view)}}
   if(a=="out"){closeCfg();await auth.signOut();user=null;ready=false;DB=[];SNAP=new Map();closeD();showAuth()}};
 
  /* ---------- QR rendering ---------- */
@@ -2068,8 +2108,9 @@ service cloud.firestore {
   const tc={};DB.forEach(r=>{const t=TH[r.st.t||0][0];tc[t]=(tc[t]||0)+1});
   const recent=[...DB].sort((a,b)=>b.upd-a.upd).slice(0,5);
   $("v-ov").innerHTML=bn+`
-  <div class="panel"><div class="glow"></div><div class="hd"><div><div class="eyebrow">Dashboard · stored in this browser</div><h1 class="big">Your QR<br>Overview</h1></div><button class="cta" data-go="ed">+ New QR page</button></div></div>
-  <div class="ov">
+  <div class="panel"><div class="glow"></div><div class="hd"><div><div class="eyebrow">${cloud?"Dashboard · synced to your cloud":"Dashboard · stored in this browser"}</div><h1 class="big">Your QR<br>Overview</h1></div><button class="cta" data-go="ed">+ New QR page</button></div></div>
+  ${healthPanel()}
+   <div class="ov">
    <div class="tile g1"><div class="tl"><span>QR pages</span></div><div class="tv">${n}</div><div class="note">${fav} favorite${fav==1?"":"s"}</div></div>
    <div class="tile g2"><div class="tl"><span>Buttons</span></div><div class="tv">${btn}</div><div class="note">${(btn/n).toFixed(1)} per page</div></div>
    <div class="tile g3"><div class="tl"><span>Avg link size</span></div><div class="tv">${avg}<small>chars</small></div><div class="note">Shorter = easier to scan</div></div>
@@ -2084,7 +2125,7 @@ service cloud.firestore {
     <div class="note" style="margin-top:16px">Every QR is permanent and tracked: scans are counted with time and device, and edits never change the printed QR.</div></div>
   </div>`;
   fillThumbs($("v-ov"))}
- $("v-ov").onclick=e=>{if(e.target.closest("[data-cfg]")){openCfg();return}const g=e.target.closest("[data-go]");if(g){g.dataset.go=="ed"?newPage():go(g.dataset.go);return}const o=e.target.closest("[data-open]");if(o){go("qs");openD(o.dataset.open)}};
+ $("v-ov").onclick=e=>{const h=e.target.closest("[data-h]");if(h){if(h.dataset.h=="run")quickCheck();else openHealthSetup();return}if(e.target.closest(".hi a"))return;if(e.target.closest("[data-cfg]")){openCfg();return}const g=e.target.closest("[data-go]");if(g){g.dataset.go=="ed"?newPage():go(g.dataset.go);return}const o=e.target.closest("[data-open]");if(o){go("qs");openD(o.dataset.open)}};
 
  /* ---------- my QRs ---------- */
  function filtered(){const q=$("q").value.trim().toLowerCase();let L=DB.filter(r=>{if(flt=="fav"&&!r.fav)return false;if(!q)return true;return (r.name+" "+(r.note||"")+" "+Object.keys(r.st.sel||{}).join(" ")+" "+(r.host||"")).toLowerCase().includes(q)});
@@ -2093,7 +2134,7 @@ service cloud.firestore {
   $("qsSub").textContent=DB.length?`${DB.length} saved · ${L.length} shown`:"Manage";
   if(!DB.length){$("cards").innerHTML=`<div class="panel empty" style="grid-column:1/-1"><h1 class="big">Nothing here yet</h1><p>Generate a QR in the editor and it will be saved here automatically.</p><button class="cta" data-go="ed">Create a QR page</button></div>`;return}
   if(!L.length){$("cards").innerHTML=`<div class="panel empty" style="grid-column:1/-1"><p>No QR codes match your search.</p></div>`;return}
-  $("cards").innerHTML=L.map(r=>`<article class="qc ${picked.has(r.id)?"pk":""}" data-id="${r.id}"><div class="im" style="background:${GR[(r.st.t||0)%GR.length]}">${imgTag(r)}<button class="star ${r.fav?"on":""}" data-a="fav" aria-label="Favorite">${STAR}</button>${selMode?`<span class="ck">${picked.has(r.id)?"✓":""}</span>`:""}</div><div class="qn">${esc(r.name)}</div><div class="qm">${Object.keys(r.st.sel||{}).length} buttons · ${TH[r.st.t||0][0]}</div><div class="qm">${fmt(r.upd)}</div></article>`).join("");
+  $("cards").innerHTML=L.map(r=>`<article class="qc ${picked.has(r.id)?"pk":""}" data-id="${r.id}"><div class="im" style="background:${GR[(r.st.t||0)%GR.length]}">${imgTag(r)}<button class="star ${r.fav?"on":""}" data-a="fav" aria-label="Favorite">${STAR}</button>${selMode?`<span class="ck">${picked.has(r.id)?"✓":""}</span>`:""}</div><div class="qn">${esc(r.name)}</div><div class="qm">${Object.keys(r.st.sel||{}).length} buttons · ${TH[r.st.t||0][0]}</div><div class="qm">${fmt(r.upd)}</div>${hb(r)}</article>`).join("");
   fillThumbs($("cards"))}
  $("cards").onclick=e=>{const g=e.target.closest("[data-go]");if(g){newPage();return}const a=e.target.closest(".qc");if(!a)return;const id=a.dataset.id;
   if(e.target.closest("[data-a=fav]")){const r=DB.find(x=>x.id==id);r.fav=!r.fav;persist();drawQs();return}
@@ -2141,7 +2182,7 @@ service cloud.firestore {
   <div class="acts"><button class="pill dk" data-a="dl">Download PNG</button>${r.link?"":'<button class="pill" data-a="edit">Edit</button>'}<button class="pill" data-a="dup">Duplicate</button><button class="pill" data-a="open">Open page</button><button class="pill" data-a="fav">${r.fav?"★ Favorite":"☆ Favorite"}</button><button class="pill dg" data-a="del">Delete</button></div>
   <div class="sec">Details</div>
   <div class="kv"><div><span>Created</span><b>${fmtT(r.cr)}</b></div><div><span>Last edited</span><b>${fmtT(r.upd)}</b></div><div><span>Theme</span><b>${TH[st.t||0][0]}</b></div><div><span>Font</span><b>${esc(st.f||"Theme default")}</b></div><div><span>Logo</span><b>${st.logo?"Uploaded":st.l?"Linked":"None"}</b></div><div><span>QR style</span><b>${SN[q.s||"r"]}${q.ll&&st.logo?" · logo inside":""}${q.tr?" · transparent":""}</b></div><div><span>QR size</span><b id="dInfo">…</b></div><div><span>Link length</span><b>${r.url.length} characters</b></div><div><span>Hosted at</span><b>${esc(r.host||"—")}</b></div></div>
-  <div class="sec">Buttons (${Object.keys(st.sel||{}).length})</div>${btns}
+  ${hSec(r)}<div class="sec">Buttons (${Object.keys(st.sel||{}).length})</div>${btns}
   <div class="sec">Notes (only visible to you)</div><textarea id="dnote" placeholder="e.g. Table cards, Main street shop…">${esc(r.note||"")}</textarea>
   ${r.pid?'<div class="sec">Scans <span class="live">● Live</span></div><div id="scBox"><div class="note">Loading…</div></div>':'<div class="sec">Scans</div><div class="note">This is a static QR, so scans can’t be counted. Open it in the editor and press Generate &amp; save to make it permanent (the QR changes one last time).</div>'}
   <div class="sec">Page link</div><textarea class="mono" readonly>${esc(r.url)}</textarea><div class="acts"><button class="pill" data-a="cp">Copy link</button></div>`;
@@ -2283,10 +2324,70 @@ service cloud.firestore {
  $("lkCp").onclick=async()=>toast(await copy(lkUrl)?"Link copied":"Couldn’t copy the link");
  lkDraw();
 
+ /* ---------- QR health ---------- */
+ let HL={latest:null,hist:[],err:"",quick:null,busy:false};
+ async function loadHealth(){if(!(cloud&&user&&fs))return;
+  try{const sn=await fs.collection("users").doc(user.id).collection("health").get();
+   const docs=sn.docs.map(d=>({id:d.id,json:d.data().json}));
+   const ps=x=>{try{return JSON.parse(x.json)}catch(e){return null}};
+   const lt=docs.find(d=>d.id=="latest");HL.latest=lt?ps(lt):null;
+   HL.hist=docs.filter(d=>/^d_\d{4}-\d{2}-\d{2}$/.test(d.id)).map(d=>({day:d.id.slice(2),r:ps(d)})).filter(x=>x.r).sort((a,b)=>a.day<b.day?-1:1).slice(-14);HL.err=""}
+  catch(e){HL.err=fbErr(e)}}
+ const ago=t=>{const m=Math.round((Date.now()-t)/6e4);return m<2?"just now":m<90?m+" min ago":m<2880?Math.round(m/60)+" h ago":Math.round(m/1440)+" days ago"};
+ const short=u=>u.replace(/^https?:\/\//,"").slice(0,48);
+ const issRow=(i,click)=>`<div class="hi" ${click&&i.ids.length==1?`data-open="${i.ids[0]}"`:'style="cursor:default"'}><div class="hr"><b>${esc(i.name||i.label)}</b><span class="hk">${esc(i.label)}</span></div><p>${esc(i.detail)}${i.url?` · <a href="${esc(i.url)}" target="_blank" rel="noopener">${esc(short(i.url))}</a>`:""}</p></div>`;
+ const hres=r=>HL.latest&&HL.latest.results&&HL.latest.results[r.id];
+ const hb=r=>{const x=hres(r);if(!x)return"";return x.ok?'<div class="qm hb ok">● Working</div>':`<div class="qm hb bad">● ${x.n} issue${x.n>1?"s":""}</div>`};
+ const hSec=r=>{const L=HL.latest;if(!L)return"";if(!hres(r))return'<div class="sec">Health</div><div class="note">Not checked yet — included in the next daily check.</div>';
+  const my=(L.issues||[]).filter(i=>i.ids.includes(r.id));
+  return `<div class="sec">Health <span class="live" style="color:${my.length?"#b3261e":"#0a0a0a"}">${my.length?"● "+my.length+" issue"+(my.length>1?"s":""):"● Working"}</span></div>${my.map(i=>issRow(i,false)).join("")}<div class="note">Last daily check: ${fmtT(L.ts)}.</div>`};
+ function healthPanel(){
+  const L=HL.latest,stale=L&&Date.now()-L.ts>36*36e5;
+  let state,cls="";
+  if(HL.err){state="Can’t read reports";cls="bad"}else if(!L){state="No check yet"}else if(L.issues.length){state=L.issues.length+" issue"+(L.issues.length>1?"s":"")+" found";cls="bad"}else state="All QRs working";
+  const map={};HL.hist.forEach(h=>map[h.day]=h.r);
+  const strip=Array.from({length:14},(_,k)=>{const dt=new Date(Date.now()-(13-k)*864e5),key=dt.toLocaleDateString("en-CA"),r=map[key];
+   return `<i class="${r?(r.issues.length?"bad":"ok"):""} ${k==13?"now":""}" title="${dt.toLocaleDateString(undefined,{day:"numeric",month:"short"})}: ${r?(r.issues.length?r.issues.length+" issue(s)":"all working"):"no check"}"></i>`}).join("");
+  const Q=HL.quick;
+  return `<div class="panel hl"><div class="hd"><div><div class="eyebrow">QR health · checked every day</div><div class="hbig ${cls}">${state}</div></div>
+   <div class="seg" style="margin:0"><button class="pill dk" data-h="run" ${HL.busy?"disabled":""}>${HL.busy?"Checking…":"Check now"}</button><button class="pill" data-h="setup">Daily check setup</button></div></div>
+   <div class="note" style="margin-top:12px">${HL.err?esc(HL.err):L?`Last daily check ${ago(L.ts)} (${fmtT(L.ts)}) · ${L.total} QRs · ${L.checks||0} checks · ${((L.ms||0)/1000).toFixed(1)} s`:"The daily check isn’t running yet. Press “Daily check setup” to turn it on, or “Check now” for an instant look."}</div>
+   ${stale?`<div class="warnbar">The daily check hasn’t run for ${ago(L.ts).replace(" ago","")}. Check your GitHub Action.</div>`:""}
+   <div class="hstrip" aria-label="Last 14 days">${strip}</div><div class="note" style="margin-top:0">Last 14 days · black = all working · red = issues · empty = no check</div>
+   ${L&&L.issues.length?`<div class="sec">Issues from the daily check</div>${L.issues.map(i=>issRow(i,true)).join("")}`:""}
+   ${Q&&Q.ts?`<div class="sec">Browser quick check · ${ago(Q.ts)}</div>${Q.issues.length?Q.issues.map(i=>issRow(i,true)).join(""):`<div class="note">No problems found in ${Q.total} QRs (${Q.checks} checks).</div>`}<div class="note">The quick check runs in your browser: it finds deleted pages, missing logos and websites that don’t answer. The daily check is stricter (it also finds “404 not found” pages).</div>`:""}</div>`}
+ const probe=async(url,cors)=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),9000);
+  try{const r=await fetch(url,{mode:cors?"cors":"no-cors",cache:"no-store",signal:ac.signal});return{ok:true,status:r.type=="opaque"?0:r.status}}
+  catch(e){return{ok:false,detail:e.name=="AbortError"?"no answer after 9 s":"can’t connect"}}finally{clearTimeout(t)}};
+ async function quickCheck(){
+  if(HL.busy)return;HL.busy=true;if(view=="ov")drawOv();
+  const iss=[],t0=Date.now(),hosts=new Map(),tasks=[],FBR="https://firestore.googleapis.com/v1/projects/"+cfg.projectId+"/databases/(default)/documents/";let checks=0;
+  const add=(ids,kind,label,url,detail)=>iss.push({ids:[].concat(ids),kind,label,url:url||"",detail});
+  for(const r of DB){const host=(r.host||"").split("#")[0];if(host){if(!hosts.has(host))hosts.set(host,[]);hosts.get(host).push(r.id)}
+   tasks.push(async()=>{let d=null;
+    if(r.pid){checks++;try{const x=await fetch(FBR+"pages/"+r.pid+"?key="+cfg.apiKey);if(x.status==404){add(r.id,"page","QR page deleted","","scans show “no longer available”");return}if(!x.ok)throw 0;d=JSON.parse((await x.json()).fields.d.stringValue)}catch(e){add(r.id,"page","Page can’t be read","","check your internet and the Firestore rules");return}}
+    else if((r.url||"").includes("#p=")){try{d=await dec(r.url.split("#p=")[1])}catch(e){add(r.id,"page","QR link damaged","","the link can’t be decoded");return}}
+    else return;
+    const tg=[];if(d.r)tg.push(["Link",d.r]);(d.k||[]).forEach(([k,v])=>{if(P[k]&&v)try{tg.push([P[k][0],P[k][1](v)])}catch(e){}});
+    for(const [lb,url] of tg){if(!/^https?:\/\//i.test(url)||/^https:\/\/wa\.me\//.test(url))continue;checks++;const x=await probe(url);if(!x.ok)add(r.id,"link",lb,url,x.detail)}
+    if(d.li){checks++;try{const x=await fetch(FBR+"logos/"+encodeURIComponent(d.li)+"?key="+cfg.apiKey);if(x.status==404)add(r.id,"logo","Logo","","the hosted logo is missing")}catch(e){}}})}
+  for(const [h,ids] of hosts)tasks.unshift(async()=>{checks++;try{const same=new URL(h,location.href).origin==location.origin,x=await probe(h,same);
+   if(!x.ok)add(ids,"host","QR page address is down",h,x.detail);else if(same&&x.status>=400)add(ids,"host","QR page address is down",h,"HTTP "+x.status)}catch(e){add(ids,"host","QR page address is down",h,"the address looks wrong")}});
+  const q=[...tasks];await Promise.all(Array.from({length:6},async()=>{while(q.length)await q.shift()()}));
+  const names=Object.fromEntries(DB.map(r=>[r.id,r.name]));iss.forEach(i=>i.name=i.ids.length>1?i.ids.length+" QRs":names[i.ids[0]]||"");
+  HL.quick={ts:Date.now(),ms:Date.now()-t0,total:DB.length,checks,issues:iss};HL.busy=false;
+  if(view=="ov")drawOv();toast(iss.length?iss.length+" issue"+(iss.length>1?"s":"")+" found":"Quick check: everything reachable")}
+ function openHealthSetup(){const b=$("cfgBox");
+  b.innerHTML=`<h3>Daily check + WhatsApp</h3><p>A small job checks every QR once a day (9:00 AM India time), saves the result on this dashboard and sends you a WhatsApp message when something is wrong.</p>
+  <ol class="steps"><li>Publish the updated Firestore rules below (Firebase → Firestore Database → Rules → paste → Publish). They let the dashboard read the reports.</li><li>Create a <b>private</b> GitHub repository and upload the files from the <b>qr-health</b> folder. The README in that folder lists every click.</li><li>Add the secrets <b>OWNER_PIN</b>, <b>WA_PHONE</b> and <b>CALLMEBOT_KEY</b> (and <b>SITE_URL</b> so the WhatsApp message links back here).</li><li>Open the Actions tab → QR health check → Run workflow with “test” ticked. You should get a WhatsApp message in about a minute.</li></ol>
+  <div class="fld">Firestore rules</div><textarea class="mono" readonly style="min-height:220px">${esc(RULES)}</textarea>
+  <div class="seg" style="margin-top:8px"><button class="pill" data-c="rules">Copy rules</button><button class="pill" data-c="x">Close</button></div>`;
+  $("bk").classList.add("on");b.classList.add("on")}
+
  /* ---------- start ---------- */
  function start(){Object.assign(S,S0());Object.assign(Q,Q0());editId=null;curUrl=null;
   $("host").value=lsGet(LH,"")||(location.protocol.startsWith("http")?location.origin+location.pathname:"");
-  $("cnt").textContent=DB.length||"";syncInputs();resetOut();draw(true);go("ov")}
+  $("cnt").textContent=DB.length||"";syncInputs();resetOut();draw(true);go("ov");loadHealth().then(()=>{if(view=="ov")drawOv();else if(view=="qs")drawQs()})}
  (async()=>{
   setSync("Local only");
   if(cfg&&cfg.apiKey&&cfg.projectId){
